@@ -82,6 +82,7 @@
                                                       :rules="!articleKey ? `required` : ''"
                                                       ref="image"
                                                       field="image"
+                                                      :isRow="true"
                                                       :label="'Article Cover Image*'"/>
                         </v-col>
                     </v-row>
@@ -185,9 +186,7 @@ export default {
         async get() {
             this.loading = true;
             articleApi.get(this.articleKey).then(res => {
-                res.data.data.read_time = parseInt(res.data.data.read_time)
                 res.data.data.image = null;
-
 
                 if (res.data.data.categories.length) {
                     res.data.data.categories = res.data.data.categories[0].id; // for now multi category selection is not possible

@@ -5,17 +5,18 @@ namespace App\Http\Controllers\Api;
 use App\Models\Skill;
 use App\Repositories\Projects\ProjectsRepository;
 use App\Repositories\Services\ServicesRepository;
+use App\Repositories\Skill\SkillsRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class ServicesController extends ApiController
+class SkillsController extends ApiController
 {
-    public $servicesRepository;
+    public $skillsRepository;
 
-    public function __construct(ServicesRepository $servicesRepository)
+    public function __construct(SkillsRepository $skillsRepository)
     {
-        $this->servicesRepository = $servicesRepository;
+        $this->skillsRepository = $skillsRepository;
     }
 
     /**
@@ -27,9 +28,9 @@ class ServicesController extends ApiController
     public function index(Request $request): JsonResponse
     {
         if ($request->input('page') == '*') {
-            return $this->successResponse($this->servicesRepository->all(['id', 'name'], false), true);
+            return $this->successResponse($this->skillsRepository->all(['id', 'name'], false), true);
         } else {
-            return $this->successResponse($this->servicesRepository->paginate($request->input('perPage')), true);
+            return $this->successResponse($this->skillsRepository->paginate($request->input('perPage')), true);
         }
     }
 
@@ -41,12 +42,12 @@ class ServicesController extends ApiController
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            'name' => 'required|unique:services,name'
+            'description' => 'required'
         ]);
 
         try {
             $data=$request->all();
-            $category = $this->servicesRepository->create($data);
+            $category = $this->skillsRepository->create($data);
 
             return $this->successResponse($category);
         } catch (Exception $exception) {
@@ -60,7 +61,7 @@ class ServicesController extends ApiController
     public function show(int $id): JsonResponse
     {
         try {
-            return $this->successResponse($this->servicesRepository->getById($id));
+            return $this->successResponse($this->skillsRepository->getById($id));
         } catch (Exception $exception) {
             $this->errorLog($exception, 'api');
 
@@ -77,11 +78,11 @@ class ServicesController extends ApiController
     public function update(Request $request, int $id): JsonResponse
     {
         $request->validate([
-            'name' => 'required'
+            'description' => 'required'
         ]);
 
         $data=$request->all();
-        $service = $this->servicesRepository->update($data, $id);
+        $service = $this->skillsRepository->update($data, $id);
 
         return $this->successResponse($service);
     }
@@ -94,7 +95,7 @@ class ServicesController extends ApiController
      */
     public function destroy(Request $request, int $id): JsonResponse
     {
-        $this->servicesRepository->delete($id);
+        $this->skillsRepository->delete($id);
 
         return $this->successResponse();
     }

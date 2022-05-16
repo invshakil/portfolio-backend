@@ -15,13 +15,10 @@ class AdminSeeder extends Seeder
     public function run()
     {
         $user = [
-            'first_name' => 'Alexander',
-            'last_name' => 'SuperTrump',
-            'gender' => 'm',
+            'name' => 'SuperTrump',
             'email' => 'portfolioAdmin@gmail.com',
             'password' => bcrypt('Civediamo22'),
             'role' => 1,
-            'email_verified_at' => now()
         ];
         User::create($user);
     }

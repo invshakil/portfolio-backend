@@ -8,6 +8,9 @@ class ServicesApi extends HttpClient {
     getDetails(id) {
         return this.requestType('get').request(`/services/${id}`)
     }
+    getSkills() {
+        return this.requestType('get').request(`/services/skills}`)
+    }
 
     saveService(payload) {
         return this.requestType('post').formBody(payload).request(`services`)

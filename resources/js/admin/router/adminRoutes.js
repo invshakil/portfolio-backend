@@ -109,6 +109,12 @@ const routes = [
         component: () => import(`@/views/Services/List.vue`)
     },
     {
+        path: 'skills',
+        name: 'skills',
+        meta: {name: 'Skills', slug: 'skills', requiresAuth: true},
+        component: () => import(`@/views/Skills/List.vue`)
+    },
+    {
         path: 'widget-settings',
         name: 'widget-settings',
         meta: {name: 'Widget Settings', slug: 'widget-settings', requiresAuth: true},

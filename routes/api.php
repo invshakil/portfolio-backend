@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\PageController;
 use App\Http\Controllers\Api\ProjectsController;
 use App\Http\Controllers\Api\ServicesController;
 use App\Http\Controllers\Api\SettingsController;
+use App\Http\Controllers\Api\SkillsController;
 use App\Http\Controllers\Api\User\ProfileController;
 use App\Http\Controllers\Api\WorkplaceController;
 use App\Http\Controllers\WebsiteController;
@@ -62,6 +63,10 @@ Route::group([
     Route::get("services/{id}/edit", [ServicesController::class, 'show']);
     Route::post("services/{id}", [ServicesController::class, 'update']);
     Route::apiResource("services", ServicesController::class);
+
+    Route::get("skills/{id}/edit", [SkillsController::class, 'show']);
+    Route::post("skills/{id}", [SkillsController::class, 'update']);
+    Route::apiResource("skills", SkillsController::class);
 
     Route::get("about-me/{id}/edit", [AboutMeController::class, 'show']);
     Route::post("about-me/{id}", [AboutMeController::class, 'update']);

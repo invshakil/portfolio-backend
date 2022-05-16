@@ -130,11 +130,6 @@ class ArticleController extends ApiController
 
         $articleInfo = $this->articleRepository->update($request, $id);
 
-        // if the article is not published before send notification
-        if (!$articleInfo['previouslyPublished']) {
-            $this->sendNotification($articleInfo['article']);
-        }
-
         \Artisan::call('cache:clear');
 
         return $this->successResponse($articleInfo['article']);
