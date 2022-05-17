@@ -33,14 +33,10 @@ class ArticleRepository implements ArticleInterface
         $data = $this->storeData($request, $image_url);
         $article = $this->model::create($data);
         // Category
-        $article->categories()->sync([$request->input('categories')]);
+        $categoryIDs=$this->getCategoryIDs($request->input('categories'));
+        $article->categories()->sync($categoryIDs);
         // Tags
-        $newTags = explode(',', $request->input('tags'));
-        $tagIDs = [];
-        foreach ($newTags as $tag) {
-            $tag = Tag::firstOrCreate(['name' => $tag]);
-            $tagIDs[] = $tag->id;
-        }
+        $tagIDs=$this->getTagIDs($request);
         $article->tags()->sync($tagIDs);
 
         return $article;
@@ -55,19 +51,40 @@ class ArticleRepository implements ArticleInterface
         $data = $this->storeData($request, $image_url);
         // Category
         $article->categories()->detach();
-        $article->categories()->sync([$request->input('categories')]);
+        $categoryIDs=$this->getCategoryIDs($request->input('categories'));
+        $article->categories()->sync($categoryIDs);
         // Tags
+        $tagIDs=$this->getTagIDs($request);
+        $article->tags()->detach();
+        $article->tags()->sync($tagIDs);
+
+        $article->update($data);
+
+        return ['article' => $article, 'previouslyPublished' => $isPublishedBefore];
+    }
+
+    private function getCategoryIDs($request): array
+    {
+        $newCategories= explode(',', $request);
+        $categoryIDs = [];
+        foreach ($newCategories as $category) {
+            $cat= Category::where('name', $category)->first();
+
+            $categoryIDs[] = $cat->id;
+        }
+
+        return $categoryIDs;
+    }
+
+    private function getTagIDs($request): array
+    {
         $newTags = explode(',', $request->input('tags'));
         $tagIDs = [];
         foreach ($newTags as $tag) {
             $tag = Tag::firstOrCreate(['name' => $tag]);
             $tagIDs[] = $tag->id;
         }
-        $article->tags()->detach();
-        $article->tags()->sync($tagIDs);
-        $article->update($data);
-
-        return ['article' => $article, 'previouslyPublished' => $isPublishedBefore];
+        return $tagIDs;
     }
 
     private function storeImage($request, $currentArticle): string

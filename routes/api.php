@@ -75,5 +75,5 @@ Route::group([
     Route::get("settings", [SettingsController::class, 'get']);
     Route::post("settings", [SettingsController::class, 'set']);
 
-    Route::post("save-page-ids", [PageController::class, 'savePageIds']);
+    Route::post("sendEmail", [WebsiteController::class, 'sendEmail']);
 });

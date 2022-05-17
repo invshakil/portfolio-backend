@@ -23,29 +23,57 @@
                                                       field="meta_title" :label="'Meta title'"/>
                         </v-col>
 
-                        <v-col cols="12" md="6">
-                            <VSelectSearchWithValidation v-model="form.categories"
-                                                         :options="categories"
-                                                         rules="required"
-                                                         ref="category"
-                                                         field="category"
-                                                         :label="`Category`"
-                                                         item-text="name"/>
-                        </v-col>
+                        <v-col cols="12" md="12" @click="dialog = true" style="cursor: pointer">
+                            <v-container fluid>
+                                <VTextFieldWithValidation v-model="form.categories"
+                                                          rules="required"
+                                                          disabled
+                                                          ref="category"
+                                                          field="category"
+                                                          :label="'Categories*'"
+                                                          placeholder="Category"
+                                                          hint="comma (,) separated"/>
+                                <v-dialog
+                                    v-model="dialog"
+                                    hide-overlay
+                                    max-width="600"
+                                >
+                                    <v-card>
+                                        <v-card-title class="text-h5">
+                                            Choose categories for the article
+                                        </v-card-title>
 
+                                        <v-card-text>
+                                            <div v-for="(category, index) in categories" :key="index">
+                                                <v-checkbox
+                                                    v-model="form.categories"
+                                                    :label="category.name"
+                                                    :value="category.name"
+                                                ></v-checkbox>
+                                            </div>
+                                        </v-card-text>
 
-                        <v-col cols="12" md="4">
-                            <VRadioInputWithValidation field="published"
-                                                       :rules="'required'"
-                                                       :options="[{label: 'Yes', value: 1}, {label: 'No', value: 0}]"
-                                                       v-model="form.status"/>
-                        </v-col>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
 
-                        <v-col cols="12" md="4">
-                            <VRadioInputWithValidation field="featured"
-                                                       :rules="'required'"
-                                                       :options="[{label: 'Yes', value: 1}, {label: 'No', value: 0}]"
-                                                       v-model="form.slider_status"/>
+                                            <v-btn
+                                                color="success"
+                                                @click="dialog = false"
+                                            >
+                                                Save
+                                            </v-btn>
+
+                                            <v-btn
+                                                color="default"
+                                                @click="()=>{
+                                                  dialog = false
+                                                  form.categories=[]}">
+                                                Reset
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-dialog>
+                            </v-container>
                         </v-col>
 
                         <v-col cols="12" md="12">
@@ -74,6 +102,19 @@
                                                           placeholder="seo keyword"
                                                           hint="comma (,) separated"/>
 
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <VRadioInputWithValidation field="published"
+                                                       :rules="'required'"
+                                                       :options="[{label: 'Yes', value: 1}, {label: 'No', value: 0}]"
+                                                       v-model="form.status"/>
+                        </v-col>
+
+                        <v-col cols="12" md="6">
+                            <VRadioInputWithValidation field="featured"
+                                                       :rules="'required'"
+                                                       :options="[{label: 'Yes', value: 1}, {label: 'No', value: 0}]"
+                                                       v-model="form.slider_status"/>
                         </v-col>
 
                         <v-col cols="12" md="12">
@@ -155,9 +196,11 @@ export default {
                 }
             },
             categories: [],
+            categoryInputs: [],
+            dialog: false,
             form: {
                 title: '',
-                categories: '',
+                categories: [],
                 meta_description: '',
                 meta_title: '',
                 status: 1,
@@ -189,7 +232,7 @@ export default {
                 res.data.data.image = null;
 
                 if (res.data.data.categories.length) {
-                    res.data.data.categories = res.data.data.categories[0].id; // for now multi category selection is not possible
+                    res.data.data.categories = res.data.data.categories.map(item => item.name).toString() // for now multi category selection is not possible
                 }
 
                 if (res.data.data.tags.length) {
@@ -222,6 +265,17 @@ export default {
                 this.loading = false;
             })
         }
+    },
+    watch: {
+        categoryInputs: {
+            handler(val) {
+                // console.log('val',val)
+                this.form.categories.push(val)
+                console.log(this.form.categories)
+            },
+            deep: true
+        },
+
     }
 }
 </script>
