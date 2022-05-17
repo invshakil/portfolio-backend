@@ -76,4 +76,7 @@ Route::group([
     Route::post("settings", [SettingsController::class, 'set']);
 
     Route::post("sendEmail", [WebsiteController::class, 'sendEmail']);
+    Route::get("hit", [WebsiteController::class, 'SetVisitor']);
+    Route::get("visitCount", [WebsiteController::class, 'getTotalVisitCount']);
+    Route::get("visitorInfo", [WebsiteController::class, 'getVisitorsInfo']);
 });

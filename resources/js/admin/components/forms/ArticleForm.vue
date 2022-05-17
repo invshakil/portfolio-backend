@@ -23,12 +23,12 @@
                                                       field="meta_title" :label="'Meta title'"/>
                         </v-col>
 
-                        <v-col cols="12" md="12" @click="dialog = true" style="cursor: pointer">
+                        <v-col cols="12" md="12" @click="dialog = true">
                             <v-container fluid>
                                 <VTextFieldWithValidation v-model="form.categories"
                                                           rules="required"
-                                                          disabled
                                                           ref="category"
+                                                          disabled
                                                           field="category"
                                                           :label="'Categories*'"
                                                           placeholder="Category"

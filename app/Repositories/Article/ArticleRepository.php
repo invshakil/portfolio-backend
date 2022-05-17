@@ -173,57 +173,6 @@ class ArticleRepository implements ArticleInterface
             ->count();
     }
 
-    public function getAllArticleCount(): int
-    {
-        return Article::all()->count();
-    }
-
-    public function SetVisitor()
-    {
-        $ip = request()->ip();
-        $visited_date = Carbon::now();
-        $visitor = Visitor::firstOrCreate(['ip' => $ip], ['visit_date' => $visited_date]);
-        $visitor->increment('hits');
-        $visitor->increment('lastDayRecord');
-
-        Visitor::where('visit_date', '<', Carbon::now()->subDays(1))
-            ->update(['lastDayRecord' => 0]);
-
-        Visitor::where('created_at', '<', Carbon::now()->subDays(1))
-            ->update(['visit_date' => Carbon::now(), 'created_at' => Carbon::now()]);
-
-
-    }
-
-    public function getTotalVisitCount(): int
-    {
-        return Visitor::sum('hits');
-    }
-
-    public function getLastDaysTotalVisitCount(): int
-    {
-        return Visitor::where('updated_at', '>', Carbon::now()->subDays(1))
-            ->sum('lastDayRecord');
-    }
-
-    public function getUniqueVisitorCount(): int
-    {
-        return Visitor::all()->count();
-    }
-
-    public function getLastWeeksUniqueVisitorCount()
-    {
-        return Visitor::where('updated_at', '>', Carbon::now()->subDays(7))
-            ->count('id');
-    }
-
-    public function getLastWeeksVisitCountByDay()
-    {
-        return Visitor::select(DB::raw('sum(hits) as visits'))
-            ->where('visit_date', ">", DB::raw('NOW() - INTERVAL 1 WEEK'))
-            ->groupBy('visit_date')
-            ->get();
-    }
 
     public function getCategoriesCount(): int
     {
@@ -238,26 +187,6 @@ class ArticleRepository implements ArticleInterface
                 $sq->where('category_id', $categoryId);
             });
         });
-    }
-
-    public function publishedArticles(int $categoryId, int $limit)
-    {
-        return $this->baseQuery($categoryId)
-            ->select('id', 'title', 'slug', 'featured', 'published', 'image', 'viewed', 'description')
-            ->with('categories')
-            ->latest()
-            ->limit($limit)
-            ->get();
-    }
-
-    public function publishedFeaturedArticles(int $categoryId, int $limit)
-    {
-        return $this->baseQuery($categoryId)
-            ->select('id', 'title', 'slug', 'featured', 'published', 'image', 'viewed', 'description')
-            ->where('featured', 1)
-            ->latest()
-            ->limit($limit)
-            ->get();
     }
 
     public function mostReadArticles( int $limit)

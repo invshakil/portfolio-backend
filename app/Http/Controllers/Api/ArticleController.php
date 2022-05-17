@@ -33,25 +33,13 @@ class ArticleController extends ApiController
         $allArticles= $this->successResponse($this->articleRepository->paginate(10), true);
         $popular= $this->successResponse($this->articleRepository->mostReadArticles(7), true);
         $count= $this->successResponse($this->articleRepository->getArticleCount(), true);
-        $hitsPerUser= $this->successResponse($this->articleRepository->getUniqueVisitorCount(), true);
-        $hits= $this->successResponse($this->articleRepository->getTotalVisitCount(), true);
-        $hitsLastDay= $this->successResponse($this->articleRepository->getLastDaysTotalVisitCount(), true);
-        $hitsPerUserLastWeek= $this->successResponse($this->articleRepository->getLastWeeksUniqueVisitorCount(), true);
         $categoryCount= $this->successResponse($this->articleRepository->getCategoriesCount(), true);
-        $hitsPerDayLastWeek= $this->successResponse($this->articleRepository->getLastWeeksVisitCountByDay(), true);
-        $AllCount= $this->successResponse($this->articleRepository->getAllArticleCount(), true);
 
         $response = [
             'all' => $allArticles,
             'countInLastDay'=>$count,
-            'allArticleCount'=>$AllCount,
-            'allTimeUniqueVisitors'=>$hitsPerUser,
-            'LastWeeksUniqueVisitors'=>$hitsPerUserLastWeek,
-            'totalVisits'=>$hits,
-            'totalVisitsLastDay'=>$hitsLastDay,
             'categoryCount'=>$categoryCount,
             'popular'=>$popular,
-            'hitsPerDayLastWeek'=>$hitsPerDayLastWeek
         ];
 
         return response($response, 201);

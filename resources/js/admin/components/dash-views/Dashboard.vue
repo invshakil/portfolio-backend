@@ -314,6 +314,7 @@ import MaterialChartCard from '@/components/material/ChartCard'
 import MaterialStatsCard from '@/components/material/StatsCard'
 import SimpleTable from '@/components/general/SimpleTable'
 import Api from "@/api/resources/article";
+import websiteApi from "@/api/resources/website";
 
 export default {
     name: 'Dashboard',
@@ -421,26 +422,43 @@ export default {
         getCount(){
             this.loading = true;
             Api.ArticleCount().then(res=>{
-                console.log('count',res.data.hitsPerDayLastWeek.original.data)
+                console.log('data',res.data.hitsPerDayLastWeek.original.data)
                 this.articleCountInLastDay=res.data.countInLastDay.original.data;
-                this.allArticleCount=res.data.allArticleCount.original.data;
-                this.visitors=res.data.allTimeUniqueVisitors.original.data;
-                this.visitorsInLastWeek=res.data.LastWeeksUniqueVisitors.original.data;
-                this.totalVisitsAllTime=res.data.totalVisits.original.data;
-                this.totalVisitsInLastDay=res.data.totalVisitsLastDay.original.data;
+                this.allArticleCount=res.data.all.original.data.total;
                 this.categories=res.data.categoryCount.original.data;
                 this.dailyData=res.data.hitsPerDayLastWeek.original.data;
                 this.loading=false;
             }).catch(err => {
                 this.loading = false;
-            }).finally(()=>{
-                console.log('again',this.dailyData[0].visits)
+            })
+        },
+        getVisits(){
+            this.loading = true;
+            websiteApi.getVisits().then(res=>{
+                this.totalVisitsAllTime=res.data.total
+                this.totalVisitsInLastDay=res.data.lastDay;
+                this.loading=false;
+            }).catch(err => {
+                this.loading = false;
+            })
+        },
+        getVisitors(){
+            this.loading = true;
+            websiteApi.getVisitors().then(res=>{
+                console.log(';visitor', res.data)
+                this.visitors=res.data.allVisitor
+                this.visitorsInLastWeek=res.data.visitorsLastWeek;
+                this.loading=false;
+            }).catch(err => {
+                this.loading = false;
             })
         },
     },
 
     async created() {
         await this.getCount();
+        await this.getVisitors();
+        await this.getVisits();
     }
 }
 </script>
