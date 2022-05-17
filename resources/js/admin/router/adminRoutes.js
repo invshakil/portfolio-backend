@@ -115,12 +115,6 @@ const routes = [
         component: () => import(`@/views/Skills/List.vue`)
     },
     {
-        path: 'widget-settings',
-        name: 'widget-settings',
-        meta: {name: 'Widget Settings', slug: 'widget-settings', requiresAuth: true},
-        component: () => import(`@/views/Settings/WidgetSettings.vue`),
-    },
-    {
         path: 'system-settings',
         name: 'system-settings',
         meta: {name: 'System Settings', slug: 'system-settings', requiresAuth: true},

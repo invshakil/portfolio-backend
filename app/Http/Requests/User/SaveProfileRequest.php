@@ -24,18 +24,8 @@ class SaveProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'required|min:2|max:30',
-            'last_name' => 'required|min:2|max:30',
-            'gender' => 'required',
-            'd_o_b' => 'required',
-            'avatar' => 'nullable|image',
-            'street' => 'required',
-            'street_number' => 'required',
-            'city' => 'required',
-            'postcode' => 'required',
-            'country_id' => 'required',
-            'country_code' => 'required',
-            'mobile_number' => 'required',
+            'name' => 'required|min:2|max:30',
+            'email' => 'required|email',
         ];
     }
 }

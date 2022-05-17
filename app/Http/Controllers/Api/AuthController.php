@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Notifications\ResetPasswordNotification;
 use Auth;
 use DB;
+use Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Notification;
@@ -147,15 +148,14 @@ class AuthController extends ApiController
     {
         try {
             DB::beginTransaction();
-            $employee = User::where('email', $request->input('email'))->first();
+            $user = User::where('email', $request->input('email'))->first();
 
-            if ($employee) {
-                $employee->update(['password' => bcrypt($request->input('password'))]);
+            if (Hash::check($request->current_password, $user->password)) {
+                $user->password=Hash::make($request->new_password);
                 DB::commit();
-
                 return $this->successResponse(['message' => 'password_updated']);
             } else {
-                return $this->failResponse(422, 'invalid_email');
+                return $this->failResponse('invalid_email',422);
             }
 
         } catch (\Exception $exception) {

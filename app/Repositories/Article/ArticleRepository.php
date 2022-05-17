@@ -201,6 +201,8 @@ class ArticleRepository implements ArticleInterface
 
     public function getArticle($condition, $isSlug = true)
     {
+       $this->model->where('title', $condition)->increment('hit_count');
+
         return $this->model->with(['categories' => function ($q) use ($condition, $isSlug) {
             $q->with(['articles' => function ($sq) use ($condition, $isSlug) {
                 $sq->select('article_id', 'title', 'status', 'hit_count', 'image', 'slider_status', 'description')

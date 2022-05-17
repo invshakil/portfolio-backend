@@ -7,8 +7,6 @@ use App\Http\Requests\User\SaveProfileRequest;
 use App\Repositories\User\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Throwable;
-use function auth;
-use function response;
 
 class ProfileController extends ApiController
 {

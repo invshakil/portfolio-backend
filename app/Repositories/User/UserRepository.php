@@ -20,7 +20,7 @@ class UserRepository implements UserInterface
 
     private function getProfileDataFromRequest($request): array
     {
-        return $request([
+        return $request->only([
             'gender',
             'first_name',
             'last_name',

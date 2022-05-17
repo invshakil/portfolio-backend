@@ -21,45 +21,27 @@
                                                           field="app_version"
                                                           :label="'App Version'"/>
                             </v-col>
-                            <v-col cols="12" md="12">
-                                <VTextFieldWithValidation v-model="form.ad_sense_script"
-                                                          ref="ad_sense_script"
-                                                          field="ad_sense_script"
-                                                          :label="'Google Adsense Script'"/>
-                            </v-col>
+
                             <v-col cols="12" md="4">
                                 <VTextFieldWithValidation v-model="form.home_page_title"
                                                           ref="home_page_title"
                                                           field="home_page_title"
                                                           :label="'Home page title'"/>
                             </v-col>
-                            <v-col cols="12" md="4">
-                                <VTextAreaFieldWithValidation v-model="form.home_page_keywords"
-                                                              rules="required"
-                                                              rows="2"
-                                                              ref="home_page_keywords"
-                                                              field="home_page_keywords"
-                                                              :label="'Home page keywords*'"
-                                                              placeholder="seo keyword"
-                                                              hint="comma (,) separated"/>
-                            </v-col>
-                            <v-col cols="12" md="4">
-                                <VTextAreaFieldWithValidation v-model="form.home_page_description"
-                                                              rules="required"
-                                                              rows="2"
-                                                              ref="home_page_description"
-                                                              field="home_page_description"
-                                                              :label="'Home page description*'"
-                                                              placeholder="Home page description"/>
-                            </v-col>
 
-
-                            <v-col cols="12" md="12">
-                                <VFileInputWithValidation v-model="form.home_page_image"
-                                                          :image-url="form.home_page_image_url"
-                                                          ref="image"
-                                                          field="image"
-                                                          :label="'Website Logo*'"/>
+                            <v-col cols="6" md="6">
+                                <v-file-input v-model="form.home_page_image"
+                                              ref="image"
+                                              field="image"
+                                              outlined
+                                              show-size
+                                              small-chips
+                                              accept="image/*"
+                                              :label="'App Logo'"
+                                              prepend-icon="mdi-camera"
+                                              @change="onFileChange"
+                                />
+                                <v-img :src="imageUrl" style="object-fit: cover" v-bind:style= " [form.home_page_image ? '' : {'display': 'none'}]" width="20%" />
                             </v-col>
 
                         </v-row>
@@ -89,26 +71,25 @@ export default {
         MaterialCard
     },
     data: () => ({
+        imageUrl: "",
         loading: false,
         form: {
             app_name: '',
             app_version: '',
-            ad_sense_script: '',
             home_page_title: '',
-            home_page_description: '',
-            home_page_keywords: '',
             home_page_image: '',
-            home_page_image_url: '',
+            home_page_image_url:'',
         }
     }),
     methods: {
         getSettings() {
             this.loading = true;
-            Api.getSettings(this.form).then(res => {
+            Api.getSettings().then(res => {
                 this.form = res.data;
+                this.imageUrl=res.data.home_page_image_url
                 this.loading = false;
             }).catch(err => {
-                this.$toastr.e('Something went wrong! ' + err);
+                this.$toastr.e('Something went wrong! ');
                 this.loading = false;
             })
         },
@@ -116,12 +97,27 @@ export default {
             this.loading = true;
             Api.updateSettings(this.form).then(res => {
                 this.$toastr.s('Settings update successful');
-                // location.reload();
+                if(this.imageUrl){
+                    location.reload();
+                }
                 this.loading = false;
             }).catch(err => {
-                this.$toastr.e('Something went wrong! ' + err);
+                this.$toastr.e('Something went wrong!');
                 this.loading = false;
             })
+        },
+        createImage(file) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                this.imageUrl = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+        onFileChange(file) {
+            if (!file) {
+                return;
+            }
+            this.createImage(file);
         }
     },
     created() {

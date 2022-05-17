@@ -99,16 +99,6 @@ const adminRoutes = [
         slug: 'settings',
         subLinks: [
             {
-                to: `/${adminPrefixSlug}/ad-spaces`,
-                icon: 'mdi-google-ads',
-                slug: 'ad-spaces'
-            },
-            {
-                to: `/${adminPrefixSlug}/widget-settings`,
-                icon: 'mdi-saw-blade',
-                slug: 'widget-settings'
-            },
-            {
                 to: `/${adminPrefixSlug}/system-settings`,
                 icon: 'mdi-cog',
                 slug: 'system-settings',

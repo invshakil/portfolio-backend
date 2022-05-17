@@ -1,4 +1,4 @@
-import HttpClient from './index'
+import HttpClient from '../api/index'
 
 class AuthApi extends HttpClient {
     async login(payload) {
@@ -15,6 +15,10 @@ class AuthApi extends HttpClient {
 
     async refresh() {
         return this.requestType('post').request(`/auth/refresh`)
+    }
+
+    async resetPassword(payload) {
+        return this.requestType('post').formBody(payload).request(`/auth/reset-password`)
     }
 }
 

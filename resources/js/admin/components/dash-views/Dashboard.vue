@@ -422,43 +422,28 @@ export default {
         getCount(){
             this.loading = true;
             Api.ArticleCount().then(res=>{
-                console.log('data',res.data.hitsPerDayLastWeek.original.data)
                 this.articleCountInLastDay=res.data.countInLastDay.original.data;
                 this.allArticleCount=res.data.all.original.data.total;
                 this.categories=res.data.categoryCount.original.data;
                 this.dailyData=res.data.hitsPerDayLastWeek.original.data;
-                this.loading=false;
-            }).catch(err => {
-                this.loading = false;
             })
-        },
-        getVisits(){
-            this.loading = true;
             websiteApi.getVisits().then(res=>{
                 this.totalVisitsAllTime=res.data.total
                 this.totalVisitsInLastDay=res.data.lastDay;
-                this.loading=false;
-            }).catch(err => {
-                this.loading = false;
             })
-        },
-        getVisitors(){
-            this.loading = true;
+
             websiteApi.getVisitors().then(res=>{
-                console.log(';visitor', res.data)
                 this.visitors=res.data.allVisitor
                 this.visitorsInLastWeek=res.data.visitorsLastWeek;
                 this.loading=false;
-            }).catch(err => {
-                this.loading = false;
             })
+
+            this.loading=false;
         },
     },
 
     async created() {
         await this.getCount();
-        await this.getVisitors();
-        await this.getVisits();
     }
 }
 </script>

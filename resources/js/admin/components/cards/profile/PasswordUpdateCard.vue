@@ -8,7 +8,7 @@
                 <v-flex xs12 md12>
                     <VTextFieldWithValidation :label="$t('Fields.current_password')"
                                               field="current_password"
-                                              rules="required|string"
+                                              rules="required"
                                               v-model="password.current_password"
                     />
                 </v-flex>
@@ -30,7 +30,8 @@
                 <v-flex xs12 text-xs-right>
                     <v-btn :class="`mx-0 font-weight-bold bg-color-${$store.state.app.color}`"
                            type="submit"
-                           v-text="$t('Common.update')"/>
+                           v-text="$t('Common.update')"
+                    />
                 </v-flex>
             </v-form>
         </ValidationObserver>
@@ -41,6 +42,8 @@
 import { ValidationObserver } from 'vee-validate'
 import MaterialCard from '@/components/material/Card'
 import VTextFieldWithValidation from '@/components/inputs/VTextFieldWithValidation'
+import authApi from "../../../api/auth"
+
 export default {
     components: {
         ValidationObserver,
@@ -52,8 +55,18 @@ export default {
             password: {
                 current_password: '',
                 new_password: '',
-                confirm_password: ''
+                confirm_password: '',
+                email:''
             }
+        }
+    },
+    mounted() {
+        const {user} = this.$store.state
+        this.password={
+            current_password: user.password,
+            new_password: '',
+            confirm_password: '',
+            email:user.email
         }
     },
     methods: {
@@ -63,7 +76,12 @@ export default {
                     if (!success) {
                         return
                     } else {
-                        console.log(success)
+                        authApi.resetPassword(this.password).then(res=>{
+                            this.$toastr.s('Password update successful');
+                        })
+                        .catch(err=>{
+                            this.$toastr.e(err.data.message);
+                        })
                     }
                     this.$nextTick(() => {
                         this.$refs.passwordForm.reset()
