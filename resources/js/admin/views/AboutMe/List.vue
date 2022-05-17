@@ -30,7 +30,7 @@
                                     <v-form>
                                         <v-card>
                                             <v-card-title>
-                                                <span class="headline">New Service</span>
+                                                <span class="headline">Info</span>
                                             </v-card-title>
                                             <v-card-text>
                                                 <v-container>

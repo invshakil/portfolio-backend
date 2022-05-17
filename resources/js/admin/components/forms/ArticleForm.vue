@@ -126,6 +126,8 @@
                                                       :isRow="true"
                                                       :label="'Article Cover Image*'"/>
                         </v-col>
+                        <v-img :src="form.image"/>
+
                     </v-row>
                     <v-row>
                         <v-col style="text-align: center">

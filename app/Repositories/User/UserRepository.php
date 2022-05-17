@@ -21,10 +21,9 @@ class UserRepository implements UserInterface
     private function getProfileDataFromRequest($request): array
     {
         return $request->only([
-            'gender',
-            'first_name',
-            'last_name',
-            'address',
+            'name',
+            'email',
+            'image',
         ]);
     }
 
@@ -48,10 +47,12 @@ class UserRepository implements UserInterface
                     ->setFileName($request->file('image')->getClientOriginalName())
                     ->upload();
 
-                $profileData['avatar'] = $files['main_file_name'];
+                $profileData['image'] = FileDirectory::AVATAR . $user->id . $request->file('image')->getClientOriginalName();
             }
 
-            $user = User::where('id', $user->id)->update($profileData);
+            $user = User::where('id', $user->id)->update(['name' => $request->name, 'email' => $request->email,
+                'image' => FileDirectory::AVATAR . $user->id . '/' . $request->file('image')->getClientOriginalName()
+            ]);
             DB::commit();
 
             return $user;

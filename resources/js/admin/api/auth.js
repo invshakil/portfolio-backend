@@ -16,6 +16,9 @@ class AuthApi extends HttpClient {
     async refresh() {
         return this.requestType('post').request(`/auth/refresh`)
     }
+    async user() {
+        return this.requestType('get').request(`/auth/user`)
+    }
 
     async resetPassword(payload) {
         return this.requestType('post').formBody(payload).request(`/auth/reset-password`)

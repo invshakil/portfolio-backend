@@ -30,6 +30,7 @@ Route::group([
     Route::post("/forgot-password", [AuthController::class, 'forgotPassword']);
     Route::post("/token-verification", [AuthController::class, 'tokenVerification']);
     Route::post("/reset-password", [AuthController::class, 'resetPassword']);
+    Route::get("/user", [AuthController::class, 'user']);
 });
 
 Route::group([
@@ -72,8 +73,9 @@ Route::group([
     Route::post("about-me/{id}", [AboutMeController::class, 'update']);
     Route::apiResource("about-me", AboutMeController::class);
 
-    Route::get("settings", [SettingsController::class, 'get']);
-    Route::post("settings", [SettingsController::class, 'set']);
+    Route::get("settings/{id}/edit", [SettingsController::class, 'show']);
+    Route::post("settings/{id}", [SettingsController::class, 'update']);
+    Route::apiResource("settings", SettingsController::class);
 
     Route::post("sendEmail", [WebsiteController::class, 'sendEmail']);
     Route::get("hit", [WebsiteController::class, 'SetVisitor']);

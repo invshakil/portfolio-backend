@@ -15,17 +15,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td> {{ articles[0].title }}</td>
-                        <td> {{ articles[0].viewed }}</td>
-                    </tr>
-                    <tr>
-                        <td> {{ articles[1].title }}</td>
-                        <td> {{ articles[1].viewed }}</td>
-                    </tr>
-                    <tr>
-                        <td> {{ articles[2].title }}</td>
-                        <td> {{ articles[2].viewed }}</td>
+                    <tr v-for="(article, index) in articles.slice(0,10)" :key="index">
+                        <td> {{ article.title }}</td>
+                        <td> {{ article.hit_count }}</td>
                     </tr>
                     </tbody>
                 </template>
@@ -77,38 +69,17 @@ export default {
         return {
             loading: false,
             articles: {},
-            editId: null,
-            categories: [
-                {name: 'All', id: null},
-            ],
-            statuses: [
-                {name: 'All', id: 1},
-                {name: 'Published', id: 1},
-                {name: 'Pending', id: 0},
-            ],
             currentPage: 1,
-            filter: {
-                search: null,
-                category: null,
-                is_published: null,
-            }
         }
     },
     methods: {
-        async getCategories() {
-            this.loading = true;
-            await categoryApi.getCategories('*').then(res => {
-                this.categories = [...this.categories, ...res.data.data];
-                this.loading = false;
-            });
-        },
         getData() {
             this.loading = true;
             const query = qs.stringify(this.filter, {encode: false, skipNulls: true});
 
             Api.list(this.currentPage, query).then(res => {
-                this.articles = res.data.all.original.data.data;
-                this.currentPage = res.data.all.original.data.current_page;
+                console.log('res',res.data)
+                this.articles = res.data.popular.original.data;
                 this.loading = false;
             }).catch(err => {
                 this.loading = false;
@@ -121,7 +92,6 @@ export default {
     },
 
     async created() {
-        await this.getCategories();
         await this.getData();
     }
 }

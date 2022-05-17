@@ -9,7 +9,7 @@
                 <v-container py-0>
                     <v-layout wrap>
 
-                        <v-flex xs12 md4>
+                        <v-flex xs12 md6>
                             <VTextFieldWithValidation :label="$t('Fields.first_name')"
                                                       field="first_name"
                                                       rules="required|min:2"
@@ -25,6 +25,15 @@
                             />
                         </v-flex>
 
+                        <v-flex xs12 md12>
+                                <VFileInputWithValidation v-model="profile.image"
+                                                          :rules="`required`"
+                                                          ref="image"
+                                                          field="image"
+                                                          :isRow="true"
+                                                          :label="'Profile Image*'"/>
+                        </v-flex>
+                        <v-img :src="profile.image"/>
                         <v-flex
                             xs12
                             text-xs-right
@@ -48,6 +57,7 @@ import DatePickerWithValidation from '@/components/inputs/DatePickerWithValidati
 import VRadioInputWithValidation from '@/components/inputs/VRadioInputWithValidation'
 import VFileInputWithValidation from '@/components/inputs/VFileInputWithValidation'
 import profile from "../../../api/resources/profile";
+import authApi from "../../../api/auth";
 export default {
     name: 'information-update-card',
     components: {
@@ -63,16 +73,20 @@ export default {
             profile: {
                 name: '',
                 email: '',
+                image:''
             },
         }
     },
     mounted() {
-        const {user} = this.$store.state
+        authApi.user().then(res=>{
+            this.profile = {
+                name: res.data?.name,
+                email: res.data?.email,
+                image: res.data?.image,
+            }
+            localStorage.user=JSON.stringify(res.data)
+        })
 
-        this.profile = {
-            name: user.name,
-            email: user.email,
-        }
     },
     methods: {
         async onSubmit() {

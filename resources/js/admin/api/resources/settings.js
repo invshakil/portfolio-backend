@@ -1,42 +1,26 @@
 import HttpClient from '../index'
 
 class SettingsApi extends HttpClient {
-    getSettings() {
-        return this.requestType('get').request(`/settings`)
+    get(page = 1) {
+        return this.requestType('get').request(`/settings?page=${page}`)
     }
 
-    updateSettings(payload) {
-        return this.requestType('post').isMultimedia().formBody(payload).request(`/settings`)
+    getDetails(id) {
+        return this.requestType('get').request(`/settings/${id}`)
     }
 
-    getAdSpaces() {
-        return this.requestType('get').request(`/ad-spaces`)
+    save(payload) {
+        return this.requestType('post').formBody(payload).request(`settings`)
     }
 
-    saveAdSpace(payload) {
-        let url = this.requestType('post');
-
-        if (payload.image !== null) {
-            url = url.isMultimedia();
-        }
-
-        return url.formBody(payload).request(`ad-spaces`)
+    update(payload, id) {
+        return this.requestType('patch').formBody(payload).request(`settings/${id}`)
     }
 
-    updateAdSpace(payload) {
-        let url = this.requestType('post');
-
-        if (payload.image !== null) {
-            url = url.isMultimedia();
-        }
-
-        return url.formBody(payload).request(`ad-spaces/${payload.id}`)
-    }
-
-    deleteAdSpace(id) {
-        return this.requestType('delete').request(`ad-spaces/${id}`)
+    delete(id) {
+        return this.requestType('delete').request(`settings/${id}`)
     }
 }
 
-const Api = new SettingsApi()
-export default Api
+const settingsApi = new SettingsApi()
+export default settingsApi

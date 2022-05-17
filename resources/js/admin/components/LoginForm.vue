@@ -93,7 +93,7 @@ export default {
             const result = await this.$refs.obs.validate()
             if (result) {
                 await this.$store.dispatch('login', this.form)
-                    .then(() => this.$router.push('/dashboard/admin/landingPage'))
+                    .then(() => this.$router.push('/dashboard/admin/home'))
                     .catch(() => {
                         this.$store.dispatch('app/setSnackbarMessage', this.$t('Messages.login_failed'))
                     })

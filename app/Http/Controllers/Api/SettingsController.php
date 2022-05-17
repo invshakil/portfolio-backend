@@ -2,54 +2,99 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Repositories\Settings\SettingsRepository;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Storage;
-use function setting;
 
 class SettingsController extends ApiController
 {
-    public function get(): array
+    public $settingsRepository;
+
+    public function __construct(SettingsRepository $settingsRepository)
     {
-        return $this->getSettings();
+        $this->settingsRepository = $settingsRepository;
     }
 
-    public function set(Request $request): JsonResponse
+    /**
+     * Returns All categories
+     * @param Request $request
+     * @return JsonResponse
+     */
+
+    public function index(Request $request): JsonResponse
     {
-        $settings = $this->getSettings();
-        if (!$settings) {
-            $settings = [];
+        if ($request->input('page') == '*') {
+            return $this->successResponse($this->settingsRepository->all(['id', 'name'], false), true);
+        } else {
+            return $this->successResponse($this->settingsRepository->paginate($request->input('perPage')), true);
+        }
+    }
+
+    /**
+     * Creates Category & Returns created category
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function store(Request $request): JsonResponse
+    {
+        $request->validate([
+            'key' => 'required|unique:settings,key',
+            'value' => 'required'
+        ]);
+
+        try {
+            $data=$request->all();
+            $category = $this->settingsRepository->create($data);
+
+            return $this->successResponse($category);
+        } catch (Exception $exception) {
+            $this->errorLog($exception, 'api');
+
+            return $this->failResponse($exception->getMessage());
         }
 
-        if ($request->hasFile('home_page_image') && $request->home_page_image) {
-            $extension = $request->file('home_page_image')->getClientOriginalExtension();
-            $settings['home_page_image_url'] = 'home_page_image_' . time() . '.' . $extension;
-            Storage::disk('public')->putFileAs('settings', $request->file('home_page_image'), $settings['home_page_image_url']);
+    }
+
+    public function show(int $id): JsonResponse
+    {
+        try {
+            return $this->successResponse($this->settingsRepository->getById($id));
+        } catch (Exception $exception) {
+            $this->errorLog($exception, 'api');
+
+            return $this->failResponse($exception->getMessage());
         }
+    }
 
-        $settings = $request->except('home_page_image');
-        $settings = array_merge($settings, $request->all());
+    /**
+     * Updates Category & Returns updated category
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function update(Request $request, int $id): JsonResponse
+    {
+        $request->validate([
+            'key' => 'required'
+        ]);
 
-        setting([
-            'general' => json_encode($settings)
-        ])->save();
+        $data=$request->all();
+        $service = $this->settingsRepository->update($data, $id);
+
+        return $this->successResponse($service);
+    }
+
+    /**
+     * Deletes Category & Returns boolean
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function destroy(Request $request, int $id): JsonResponse
+    {
+        $this->settingsRepository->delete($id);
 
         return $this->successResponse();
-    }
-
-    private function getSettings(): array
-    {
-        $settings = setting()->get('general');
-        if ($settings) {
-            $settings = json_decode($settings, true);
-        } else
-            return [];
-
-        if (Arr::get($settings, 'home_page_image_url')) {
-            $settings['home_page_image_url'] = Storage::disk('public')->url('settings/' . basename($settings['home_page_image_url']));
-        }
-
-        return $settings;
     }
 }
