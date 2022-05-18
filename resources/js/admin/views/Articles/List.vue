@@ -201,7 +201,6 @@ export default {
             const query = qs.stringify(this.filter, {encode: false, skipNulls: true});
 
             Api.list(this.currentPage, query).then(res => {
-                console.log('currentPage', res.data.all.original.data)
                 this.articles = res.data.all.original.data;
                 this.currentPage = res.data.all.original.data.current_page;
                 this.loading = false;

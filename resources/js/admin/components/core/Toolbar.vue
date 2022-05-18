@@ -13,53 +13,13 @@
                 align-center
                 layout
                 py-2>
-                <v-text-field
-                    v-if="responsiveInput"
-                    class="mr-4 mt-2 purple-input"
-                    :label="`${$t('Common.search')}...`"
-                    hide-details
-                    color="purple"
-                />
-                <router-link
-                    v-ripple
-                    class="toolbar-items"
-                    to="/">
-                    <v-icon>mdi-home</v-icon>
-                </router-link>
-                <v-menu
-                    bottom
-                    left
-                    offset-y
-                    transition="slide-y-transition">
-                    <template v-slot:activator="{ on, attrs }">
-
-                        <v-badge :color="$store.state.app.color" overlap>
-                            <template slot="badge">{{ notifications.length }}</template>
-                            <div v-ripple v-bind="attrs" v-on="on">
-                                <v-icon>mdi-bell</v-icon>
-                            </div>
-                        </v-badge>
-
-                    </template>
-
-                    <v-card class="notifications-area">
-                        <v-list dense>
-                            <v-list-item
-                                v-for="notification in notifications"
-                                :key="notification"
-                                @click="onClick">
-                                <v-list-item-title v-text="notification"/>
-                            </v-list-item>
-                        </v-list>
-                    </v-card>
-                </v-menu>
                 <router-link
                     v-ripple
                     class="toolbar-items"
                     :to="{ name: 'user-profile' }">
                     <v-icon>mdi-account</v-icon>
+                    <v-card-text style="color: #19b275">{{user}}</v-card-text>
                 </router-link>
-
                 <v-icon
                     class="toolbar-items"
                     @click="logout">mdi-power
@@ -71,9 +31,11 @@
 
 <script>
 import {mapGetters, mapMutations} from 'vuex'
+import authApi from "../../api/auth";
 
 export default {
     data: () => ({
+        user:'',
         notifications: [
             'Mike, Thanos is coming',
             '5 new avengers joined the team',
@@ -100,6 +62,7 @@ export default {
         this.onResponsiveInverted()
         window.addEventListener('resize', this.onResponsiveInverted)
         this.pageTitle = this.$t('Core.Nav.' + this.$route.meta.slug)
+        this.getUSer()
     },
     beforeDestroy() {
         window.removeEventListener('resize', this.onResponsiveInverted)
@@ -112,6 +75,11 @@ export default {
         },
         onClick() {
             //
+        },
+        async getUSer() {
+            authApi.user().then(res => {
+                this.user=res.data?.name
+            })
         },
         onResponsiveInverted() {
             if (window.innerWidth < 991) {

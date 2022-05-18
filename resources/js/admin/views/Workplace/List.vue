@@ -144,7 +144,6 @@ export default {
             const query = qs.stringify(this.filter, {encode: false, skipNulls: true});
 
             WorkplaceApi.list(this.currentPage, query).then(res => {
-                console.log('wplaces', res.data.data)
                 this.workplaces = res.data.data;
                 this.currentPage = res.data.data.current_page;
                 this.loading = false;

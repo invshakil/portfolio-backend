@@ -68,7 +68,7 @@ export default {
     data() {
         return {
             loading: false,
-            articles: {},
+            articles: [],
             currentPage: 1,
         }
     },
@@ -78,7 +78,6 @@ export default {
             const query = qs.stringify(this.filter, {encode: false, skipNulls: true});
 
             Api.list(this.currentPage, query).then(res => {
-                console.log('res',res.data)
                 this.articles = res.data.popular.original.data;
                 this.loading = false;
             }).catch(err => {

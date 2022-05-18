@@ -10,7 +10,6 @@
                               id="file-input"
                               clearable
                               show-size
-                              outlined
                               counter
                               chips
                               @change="handleFileSelection"

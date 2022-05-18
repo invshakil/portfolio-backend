@@ -18,15 +18,9 @@ class CategoryRepository implements CategoryInterface
 
     public function create(array $data)
     {
-        $data['slug'] = $this->slugify($data['name']);
         Artisan::call('cache:clear');
 
         return $this->model->create($data);
-    }
-
-    private function slugify($name): string
-    {
-        return \Str::slug($name);
     }
 
     public function getById(int $id)

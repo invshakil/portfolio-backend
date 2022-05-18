@@ -208,7 +208,6 @@ export default {
             categoryApi.getCategoryDetails(id).then(res => {
                 for (const key of Object.keys(this.form)) {
                     this.form[key] = res.data.data[key];
-                    console.log(key)
                 }
                 this.dialog = true;
                 this.loading = false;
@@ -229,6 +228,7 @@ export default {
 
             url.then(res => {
                 this.index();
+                this.$toastr.s('Data Saved Successfully')
                 this.loading = false;
                 this.dialog = false;
             }).catch(err => {
@@ -240,6 +240,7 @@ export default {
             if (confirm('Are you sure?')) {
                 this.loading = true;
                 categoryApi.deleteCategory(id).then(res => {
+                    this.$toastr.s('Deleted Successfully')
                     this.loading = false;
                     this.index();
                 }).catch(err => {

@@ -5,6 +5,7 @@ namespace App\Repositories\User;
 
 
 use App\Enums\FileDirectory;
+use App\Models\AboutMe;
 use App\Models\User;
 use App\Services\FileUpload;
 use DB;
@@ -43,16 +44,19 @@ class UserRepository implements UserInterface
             if ($request->hasFile('image')) {
                 $files = (new FileUpload($request->file('image')))
                     ->directory(FileDirectory::AVATAR . $user->id)
-                    ->setDimension(null, 250)
+                    ->setDimension(null, null)
                     ->setFileName($request->file('image')->getClientOriginalName())
                     ->upload();
-
-                $profileData['image'] = FileDirectory::AVATAR . $user->id . $request->file('image')->getClientOriginalName();
             }
 
-            $user = User::where('id', $user->id)->update(['name' => $request->name, 'email' => $request->email,
+            AboutMe::where('key', 'user_image')->update(['value' => FileDirectory::AVATAR . $user->id . '/' . $request->file('image')->getClientOriginalName()]);
+
+            $user = User::where('id', $user->id)->update([
+                'name' => $request->name,
+                'email' => $request->email,
                 'image' => FileDirectory::AVATAR . $user->id . '/' . $request->file('image')->getClientOriginalName()
             ]);
+
             DB::commit();
 
             return $user;

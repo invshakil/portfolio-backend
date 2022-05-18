@@ -20,8 +20,8 @@
                         <v-col cols="12" md="6">
                             <VTextFieldWithValidation v-model="form.tags"
                                                       rules="required"
-                                                      ref="from"
-                                                      field="from"
+                                                      ref="tags"
+                                                      field="tags"
                                                       :label="'Tags*'"
                                                       @click.stop="dialog = true"/>
                         </v-col>
@@ -167,7 +167,6 @@ export default {
         getServices(){
             ServicesApi.getServices(this.currentPage).then(res => {
                 this.services = res.data.data;
-                console.log('services',  this.services.data)
                 this.loading = false;
             }).catch(err => {
                 this.loading = false;

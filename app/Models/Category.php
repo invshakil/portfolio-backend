@@ -11,15 +11,8 @@ class Category extends BaseModel
 
     protected $fillable = [
         'name',
-        'slug',
-        'excerpt',
-        'keywords',
-        'is_published',
-        'is_video',
-        'display_in_navigation',
-        'display_in_home_page',
-        'position',
-        'categories',
+        'description',
+        'status'
     ];
 
     /**

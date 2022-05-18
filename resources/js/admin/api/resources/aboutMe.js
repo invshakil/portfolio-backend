@@ -10,22 +10,11 @@ class AboutMeApi extends HttpClient {
     }
 
     save(payload) {
-        let url = this.requestType('post');
-
-        if (payload.image !== null) {
-            url = url.isMultimedia();
-        }
-
-        return url.formBody(payload).request(`about-me`)
+        return this.requestType('post').formBody(payload).request(`about-me`)
     }
 
     update(payload, id) {
-        let url = this.requestType('patch');
-
-        if (payload.image !== null) {
-            url = url.isMultimedia();
-        }
-        return url.formBody(payload).request(`about-me/${id}`)
+        return this.requestType('patch').formBody(payload).request(`about-me/${id}`)
     }
 
     delete(id) {

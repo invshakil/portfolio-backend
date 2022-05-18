@@ -39,19 +39,41 @@
                                                             <VTextFieldWithValidation v-model="form.key"
                                                                                       rules="required"
                                                                                       ref="key"
-                                                                                      :disabled="editId"
+                                                                                      :disabled="editId!==null"
                                                                                       field="key"
                                                                                       :label="'Info Title*'"/>
 
                                                         </v-col>
 
-                                                        <v-col cols="12" sm="12" md="12">
+                                                        <v-col cols="12" sm="12" md="12"
+                                                               v-if="form.key!=='contact_me' || 'd_o_b'"
+                                                        >
                                                             <VTextFieldWithValidation v-model="form.value"
                                                                                       rules="required"
                                                                                       ref="value"
+                                                                                      :disabled="form.key==='user_image'"
                                                                                       field="value"
                                                                                       :label="'Information*'"/>
 
+                                                        </v-col>
+
+                                                        <v-col cols="12" sm="12" md="12" v-if="form.key==='contact_me'">
+                                                            <VTextAreaFieldWithValidation v-model="form.value"
+                                                                                          rules="required"
+                                                                                          rows="8"
+                                                                                          ref="value"
+                                                                                          field="value"
+                                                                                          :label="'Information*'"
+                                                                                          hint="displayed on website as it is"/>
+                                                        </v-col>
+
+                                                        <v-col cols="12" sm="12" md="12" v-if="form.key==='d_o_b'">
+                                                            <v-date-picker
+                                                                v-model="form.value"
+                                                                color="red lighten-1"
+                                                                full-width
+                                                                :label="'Pick Your Birthday *'"
+                                                            />
                                                         </v-col>
 
                                                     </v-row>
@@ -149,11 +171,15 @@ import {ValidationObserver} from 'vee-validate'
 import aboutMeApi from "@/api/resources/aboutMe";
 import MaterialCard from '@/components/material/Card'
 import VRadioInputWithValidation from "@/components/inputs/VRadioInputWithValidation";
+import VTextAreaFieldWithValidation from "@/components/inputs/VTextAreaFieldWithValidation";
+import DatePickerWithValidation from "../../components/inputs/DatePickerWithValidation";
 
 export default {
     components: {
         VRadioInputWithValidation,
         VTextFieldWithValidation,
+        VTextAreaFieldWithValidation,
+        DatePickerWithValidation,
         ValidationObserver,
         draggable,
         MaterialCard

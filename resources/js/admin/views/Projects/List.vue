@@ -115,7 +115,7 @@ export default {
     data() {
         return {
             loading: false,
-            projects: {},
+            projects: [],
             services: [],
             serviceName:[],
             editId: null,
@@ -135,12 +135,11 @@ export default {
         }
     },
     methods: {
-        getData() {
+        async getData() {
             this.loading = true;
             const query = qs.stringify(this.filter, {encode: false, skipNulls: true});
 
-            ServicesApi.getServices(this.currentPage).then(res => {
-                console.log('services', res.data.data)
+            await ServicesApi.getServices(this.currentPage).then(res => {
                 this.services = res.data.data;
                 this.currentPage = res.data.data.current_page;
                 this.loading = false;
@@ -148,8 +147,7 @@ export default {
                 this.loading = false;
             })
 
-            ProjectsApi.list(this.currentPage, query).then(res => {
-                console.log('projects', res.data.data)
+            await ProjectsApi.list(this.currentPage, query).then(res => {
                 this.projects = res.data.data;
                 this.currentPage = res.data.data.current_page;
                 this.loading = false;

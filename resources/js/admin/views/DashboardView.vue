@@ -7,7 +7,7 @@
                 <router-view/>
             </v-fade-transition>
         </v-main>
-        <!--        <core-footer v-if="$route.meta.name !== 'Maps'"/>-->
+<!--                <core-footer v-if="$route.meta.name !== 'Maps'"/>-->
     </v-app>
 </template>
 

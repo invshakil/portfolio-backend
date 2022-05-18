@@ -39,17 +39,17 @@ class ProfileController extends ApiController
     /**
      * User Password Update.
      *
-     * @return JsonResponse
+     * @return void
      */
-    public function passwordUpdate(): JsonResponse
+    public function passwordUpdate()
     {
         //
     }
 
     /**
-     * @return JsonResponse
+     * @return void
      */
-    public function emailUpdate(): JsonResponse
+    public function emailUpdate()
     {
         //
     }

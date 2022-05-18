@@ -2,12 +2,12 @@
   <v-container fill-height fluid grid-list-xl>
     <v-layout justify-center wrap>
 
-      <v-flex xs12 md8>
+      <v-flex xs12 md12>
         <InformationUpdateCard/>
       </v-flex>
 
       <v-flex xs12 md4>
-        <PasswordUpdateCard/>
+<!--        <PasswordUpdateCard/>-->
       </v-flex>
 
     </v-layout>

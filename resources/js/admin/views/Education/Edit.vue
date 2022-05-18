@@ -4,7 +4,7 @@
             <v-flex md12>
                 <EducationForm title="Edit Education"
                                short-description="Selecting published will make it displayed in the website"
-                               :edit-key="$route.params.slug"/>
+                               :edit-key="$route.params.slug.toString()"/>
             </v-flex>
         </v-layout>
     </v-container>

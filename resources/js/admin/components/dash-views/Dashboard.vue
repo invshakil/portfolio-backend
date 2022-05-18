@@ -102,7 +102,6 @@ export default {
             totalVisitsInLastDay: 0,
             totalVisitsAllTime: 0,
             categories: 0,
-            dailyData: [],
         }
     },
 
@@ -116,10 +115,9 @@ export default {
                 this.articleCountInLastDay=res.data.countInLastDay.original.data;
                 this.allArticleCount=res.data.all.original.data.total;
                 this.categories=res.data.categoryCount.original.data;
-                this.dailyData=res.data.hitsPerDayLastWeek.original.data;
             })
             websiteApi.getVisits().then(res=>{
-                this.totalVisitsAllTime=res.data.total
+                this.totalVisitsAllTime=res.data.total.toInteger
                 this.totalVisitsInLastDay=res.data.lastDay;
             })
 

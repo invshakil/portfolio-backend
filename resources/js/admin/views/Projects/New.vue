@@ -2,8 +2,8 @@
     <v-container fill-height fluid grid-list-xl>
         <v-layout justify-center wrap>
             <v-flex md12>
-                <EducationForm title="Create New Education"
-                          short-description="Selecting published will make it displayed in the website"
+                <ProjectForm title="Create New Project"
+                          short-description="This will be displayed on the websites portfolio page"
                 />
             </v-flex>
         </v-layout>
@@ -11,11 +11,11 @@
 
 </template>
 <script>
-import EducationForm from "../../components/forms/EducationForm";
+import ProjectForm from "../../components/forms/ProjectForm";
 
 export default {
     components: {
-        EducationForm,
+        ProjectForm,
     },
 }
 </script>

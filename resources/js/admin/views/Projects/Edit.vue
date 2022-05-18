@@ -3,8 +3,8 @@
         <v-layout justify-center wrap>
             <v-flex md12>
                 <ProjectsForm title="Edit Projects"
-                               short-description="Selecting published will make it displayed in the website"
-                               :edit-key="$route.params.slug"/>
+                              short-description="This will be displayed on the websites portfolio page"
+                              :edit-key="$route.params.slug.toString()"/>
             </v-flex>
         </v-layout>
     </v-container>

@@ -121,7 +121,6 @@ export default {
             const query = qs.stringify(this.filter, {encode: false, skipNulls: true});
 
             EducationApi.list(this.currentPage, query).then(res => {
-                console.log('ed',res.data.data)
                 this.educations = res.data.data;
                 this.currentPage = res.data.data.current_page;
                 this.loading = false;

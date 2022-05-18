@@ -4,7 +4,7 @@
             <v-flex md12>
                 <ArticleForm title="Edit Article"
                              short-description="Selecting published will display the article in website"
-                             :article-key="$route.params.slug"/>
+                             :article-key="$route.params.slug.toString()"/>
             </v-flex>
         </v-layout>
     </v-container>

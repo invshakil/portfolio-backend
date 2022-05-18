@@ -39,7 +39,7 @@
                                                             <VTextFieldWithValidation v-model="form.key"
                                                                                       rules="required"
                                                                                       ref="key"
-                                                                                      :disabled="editId"
+                                                                                      :disabled="editId!==null"
                                                                                       field="key"
                                                                                       :label="'Info Title*'"/>
 
@@ -177,7 +177,6 @@ export default {
         index(page = 1) {
             this.loading = true;
             settingsApi.get(page).then(res => {
-                console.log('da',res.data)
                 this.aboutMes = res.data.data;
                 this.loading = false;
             }).catch(err => {
