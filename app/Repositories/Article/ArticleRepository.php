@@ -141,7 +141,7 @@ class ArticleRepository implements ArticleInterface
             ->with(['author'])
             ->when(request()->has('category'), function ($q) {
                 $q->whereHas('categories', function ($sq) {
-                    $sq->where('category_id', \request('category'));
+                    $sq->where('categories.name', \request('category'));
                 });
             })
             ->when(request()->has('is_published'), function ($q) {

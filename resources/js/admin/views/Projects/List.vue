@@ -19,13 +19,14 @@
                                 </v-btn>
                             </v-col>
                             <v-col cols="12" md="4" class="px-0">
-                                <VSelectSearchWithValidation v-model="filter.current"
-                                                             :options="statuses"
+                                <VSelectSearchWithValidation v-model="filter.service"
+                                                             :options="services.data"
                                                              @change="getData"
                                                              ref="publication_status"
                                                              field="publication_status"
-                                                             :label="`Job status`"
-                                                             item-text="name"/>
+                                                             :label="`Service Name`"
+                                                             item-text="name"
+                                                             item-value="name"/>
                             </v-col>
                             <v-col cols="12" md="6" class=" pl-0">
                                 <VTextFieldWithValidation v-model="filter.search"
@@ -130,7 +131,7 @@ export default {
             currentPage: 1,
             filter: {
                 search: null,
-                current: null
+                service: null
             }
         }
     },

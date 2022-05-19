@@ -70,6 +70,7 @@ Route::group([
     Route::apiResource("skills", SkillsController::class);
 
     Route::get("about-me/{id}/edit", [AboutMeController::class, 'show']);
+    Route::get("allTags", [AboutMeController::class, 'getAllTags']);
     Route::post("about-me/{id}", [AboutMeController::class, 'update']);
     Route::apiResource("about-me", AboutMeController::class);
 

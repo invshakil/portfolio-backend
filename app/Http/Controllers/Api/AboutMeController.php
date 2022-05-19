@@ -6,6 +6,7 @@ use App\Repositories\AboutMe\AboutMeRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Models\Tag;
 
 class AboutMeController extends ApiController
 {
@@ -96,5 +97,18 @@ class AboutMeController extends ApiController
         $this->aboutMeRepository->delete($id);
 
         return $this->successResponse();
+    }
+
+    /**
+     * Deletes Category & Returns boolean
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getAllTags()
+    {
+        $tags=Tag::all();
+
+        return $this->successResponse($tags);
     }
 }

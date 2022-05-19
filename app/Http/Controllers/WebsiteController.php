@@ -93,7 +93,6 @@ class WebsiteController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'email|required',
-            'subject' => 'required',
             'message' => 'required',
         ]);
         $data = [

@@ -84,10 +84,12 @@ class ProjectsRepository
     {
         return $this->model::with('service')
             ->when(\request()->has('search'), function ($q) {
-                $q->where('company_name', 'LIKE', '%' . \request('search') . '%');
+                $q->where('name', 'LIKE', '%' . \request('search') . '%');
             })
-            ->when(\request()->has('current'), function ($q) {
-                $q->where('current', \request('current'));
+            ->when(request()->has('service'), function ($q) {
+                $q->whereHas('service', function ($sq) {
+                    $sq->where('services.name', \request('service'));
+                });
             })
             ->orderBy('id','desc')
             ->paginate($perPage);
