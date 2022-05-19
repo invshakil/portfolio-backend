@@ -7,7 +7,7 @@ const adminRoutes = [
     },
     {
         to: `#`,
-        icon: 'mdi-briefcase-edit',
+        icon: 'mdi-view-list',
         slug: 'articles',
         subLinks: [
             {
@@ -29,7 +29,7 @@ const adminRoutes = [
     },
     {
         to: `#`,
-        icon: 'mdi-page-next',
+        icon: 'mdi-facebook-workplace',
         slug: 'workplace',
         subLinks: [
             {
@@ -46,7 +46,7 @@ const adminRoutes = [
     },
     {
         to: `#`,
-        icon: 'mdi-page-next',
+        icon: 'mdi-school',
         slug: 'education',
         subLinks: [
             {
@@ -63,7 +63,7 @@ const adminRoutes = [
     },
     {
         to: `#`,
-        icon: 'mdi-page-next',
+        icon: 'mdi-briefcase-edit',
         slug: 'projects',
         subLinks: [
             {
@@ -80,17 +80,17 @@ const adminRoutes = [
     },
     {
         to: `/${adminPrefixSlug}/services`,
-        icon: 'mdi-square-edit-outline',
+        icon: 'mdi-handshake-outline',
         slug: 'services',
     },
     {
         to: `/${adminPrefixSlug}/skills`,
-        icon: 'mdi-square-edit-outline',
+        icon: 'mdi-car-esp',
         slug: 'skills',
     },
     {
         to: `/${adminPrefixSlug}/about-me`,
-        icon: 'mdi-square-edit-outline',
+        icon: 'mdi-information-outline',
         slug: 'about-me',
     },
     {

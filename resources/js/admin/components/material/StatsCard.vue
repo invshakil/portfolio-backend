@@ -81,7 +81,6 @@ export default {
       default: undefined
     },
     value: {
-      type: Number,
       default: undefined
     },
     smallValue: {

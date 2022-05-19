@@ -117,7 +117,7 @@ export default {
                 this.categories=res.data.categoryCount.original.data;
             })
             websiteApi.getVisits().then(res=>{
-                this.totalVisitsAllTime=res.data.total.toInteger
+                this.totalVisitsAllTime=res.data.total
                 this.totalVisitsInLastDay=res.data.lastDay;
             })
 

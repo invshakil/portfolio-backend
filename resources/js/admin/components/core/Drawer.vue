@@ -74,7 +74,7 @@
 
         <template v-slot:append>
             <div class="pa-2 filter-wrapper">
-                <core-filter/>
+<!--                <core-filter/>-->
             </div>
         </template>
     </v-navigation-drawer>
