@@ -13,6 +13,7 @@
                         <v-col cols="12" md="6">
                             <VTextFieldWithValidation v-model="form.title" rules="required" ref="title"
                                                       field="title"
+                                                      :errorValidate="errors.title"
                                                       :label="'Title*'"/>
                         </v-col>
 
@@ -119,14 +120,12 @@
 
                         <v-col cols="12" md="12">
                             <VFileInputWithValidation v-model="form.image"
-                                                      :image-url="form.image_url"
                                                       :rules="!articleKey ? `required` : ''"
                                                       ref="image"
                                                       field="image"
                                                       :isRow="true"
                                                       :label="'Article Cover Image*'"/>
                         </v-col>
-                        <v-img :src="form.image"/>
 
                     </v-row>
                     <v-row>
@@ -191,6 +190,7 @@ export default {
     data() {
         return {
             loading: false,
+            errors: '',
             editorConfig: {
                 modules: {
                     imageDrop: true,
@@ -231,10 +231,9 @@ export default {
         async get() {
             this.loading = true;
             articleApi.get(this.articleKey).then(res => {
-                res.data.data.image = null;
 
                 if (res.data.data.categories.length) {
-                    res.data.data.categories = res.data.data.categories.map(item => item.name).toString() // for now multi category selection is not possible
+                    res.data.data.categories = res.data.data.categories.map(item => item.name).toString()
                 }
 
                 if (res.data.data.tags.length) {
@@ -244,7 +243,7 @@ export default {
                 this.form = res.data.data;
                 this.loading = false;
             }).catch(err => {
-                this.$toastr.e('Something went wrong! ' + err);
+                this.$toastr.e('Something went wrong!');
                 this.loading = false;
             })
         },
@@ -263,7 +262,8 @@ export default {
                 this.$router.push({name: 'articles'});
                 this.loading = false;
             }).catch(err => {
-                this.$toastr.e('Something went wrong! ' + err);
+                this.errors=err.data.errors
+                this.$toastr.e('Something went wrong!');
                 this.loading = false;
             })
         }
@@ -271,7 +271,6 @@ export default {
     watch: {
         categoryInputs: {
             handler(val) {
-                // console.log('val',val)
                 this.form.categories.push(val)
                 console.log(this.form.categories)
             },

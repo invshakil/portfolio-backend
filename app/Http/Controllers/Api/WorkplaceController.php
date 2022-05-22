@@ -44,9 +44,9 @@ class WorkplaceController extends ApiController
 
         try {
             $data = $request->all();
-            $category = $this->workplaceRepository->create($data);
+            $workplace = $this->workplaceRepository->create($data);
 
-            return $this->successResponse($category);
+            return $this->successResponse($workplace);
         } catch (Exception $exception) {
             $this->errorLog($exception, 'api');
 

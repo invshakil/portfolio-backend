@@ -39,6 +39,7 @@
                                                             <VTextFieldWithValidation v-model="form.key"
                                                                                       rules="required"
                                                                                       ref="key"
+                                                                                      :errorValidate="errors.key"
                                                                                       :disabled="editId!==null"
                                                                                       field="key"
                                                                                       :label="'Info Title*'"/>
@@ -189,6 +190,7 @@ export default {
             dialog: false,
             loading: false,
             aboutMes: {},
+            errors:'',
             editId: null,
             form: {
                 key: '',
@@ -246,6 +248,9 @@ export default {
                 this.$toastr.s('Data Saved Successfully')
                 this.index();
             }).catch(err => {
+                console.log(err)
+                this.errors=err.data.errors
+                this.$toastr.e('Something went wrong!');
                 this.loading = false;
             })
             this.editId = null;

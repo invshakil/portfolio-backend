@@ -30,6 +30,7 @@
                         <v-flex xs12 md8>
                             <VFileInputWithValidation v-model="profile.image"
                                                       ref="image"
+                                                      rules=""
                                                       field="image"
                                                       :isRow="true"
                                                       :label="'Update Profile Image*'"/>
@@ -81,29 +82,28 @@ export default {
         }
     },
     methods: {
-        async getUSer() {
-            authApi.user().then(res => {
-                this.profile = {
-                    name: res.data?.name,
-                    email: res.data?.email,
-                    image: res.data?.image,
-                }
-            })
-        },
         async onSubmit() {
             const validated = await this.$refs.profileForm.validate()
             if (!validated) return
             this.$store.dispatch('saveProfile', this.profile)
-                .then(res => {
-                    res.status
-                })
-
-            this.$toastr.s('Profile Updated Successfully');
-            window.location.reload()
+                .then(() => this.$toastr.s('Profile Updated successful'))
+                .catch(() => this.$store.dispatch('app/setSnackbarMessage', this.$t('Messages.something_went_wrong')))
         },
     },
     async mounted() {
-        await this.getUSer()
+        // const {user} = this.$store.state
+        // this.profile = {
+        //     name: user.name,
+        //     email: user.email,
+        //     image:user.image
+        // }
+        authApi.user().then(res => {
+            this.profile = {
+                name: res.data?.name,
+                email: res.data?.email,
+                image: res.data?.image,
+            }
+        })
     },
 }
 </script>

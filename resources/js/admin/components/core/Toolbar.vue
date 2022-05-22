@@ -80,6 +80,8 @@ export default {
             authApi.user().then(res => {
                 this.user=res.data?.name
             })
+            // const {user} = this.$store.state
+            // this.user=user.name
         },
         onResponsiveInverted() {
             if (window.innerWidth < 991) {

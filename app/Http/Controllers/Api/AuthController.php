@@ -80,6 +80,7 @@ class AuthController extends ApiController
     public function user(Request $request): JsonResponse
     {
         $user = auth()->user();
+//        $user = User::where('id',3)->first();
         return response()->json($user);
     }
 

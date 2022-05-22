@@ -70,7 +70,8 @@ export default {
         return new Promise((resolve, reject) => {
             profile.saveProfile(payload)
                 .then(({data}) => {
-                    data.profile
+                    commit('set_auth_profile', data)
+                    resolve(data)
                 })
                 .catch(({data}) => reject(data))
         })

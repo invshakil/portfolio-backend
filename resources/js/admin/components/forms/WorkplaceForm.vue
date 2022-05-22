@@ -13,6 +13,7 @@
                         <v-col cols="12" md="6">
                             <VTextFieldWithValidation v-model="form.company_name" rules="required" ref="title"
                                                       field="company_name"
+                                                      :errorValidate="errors.company_name"
                                                       :label="'Company Name*'"/>
                         </v-col>
 
@@ -179,6 +180,7 @@ export default {
     },
     data() {
         return {
+            errors: '',
             loading: false,
             dialog: false,
             dialog2: false,
@@ -205,7 +207,7 @@ export default {
                 this.form = res.data.data;
                 this.loading = false;
             }).catch(err => {
-                this.$toastr.e('Something went wrong! ' + err);
+                this.$toastr.e('Something went wrong! ');
                 this.loading = false;
             })
         },
@@ -224,7 +226,8 @@ export default {
                 this.$router.push({name: 'workplace'});
                 this.loading = false;
             }).catch(err => {
-                this.$toastr.e('Something went wrong! ' + err);
+                this.errors=err.data.errors
+                this.$toastr.e('Something went wrong! ');
                 this.loading = false;
             })
         }

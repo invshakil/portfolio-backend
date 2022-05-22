@@ -38,6 +38,7 @@
                                                         <v-col cols="12" sm="12" md="12">
                                                             <VTextFieldWithValidation v-model="form.name"
                                                                                       rules="required"
+                                                                                      :errorValidate="errors.name"
                                                                                       ref="name"
                                                                                       field="name"
                                                                                       :label="'Service Name*'"/>
@@ -171,6 +172,7 @@ export default {
     data() {
         return {
             dialog: false,
+            errors:'',
             loading: false,
             services: {},
             editId: null,
@@ -231,6 +233,8 @@ export default {
                 this.loading = false;
                 this.dialog = false;
             }).catch(err => {
+                this.errors=err.data.errors
+                this.$toastr.e('Something went wrong!');
                 this.loading = false;
             })
         },

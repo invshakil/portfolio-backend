@@ -25,6 +25,7 @@
                                                              ref="category"
                                                              field="category"
                                                              :label="`Category`"
+                                                             item-value="name"
                                                              item-text="name"/>
                             </v-col>
                             <v-col cols="12" md="3" class="px-0">

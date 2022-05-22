@@ -3,7 +3,7 @@
     <v-text-field
         outlined
         v-model="inner_value"
-        :error-messages="errors"
+        :error-messages="errorValidate"
         :success="valid"
         v-bind="$attrs"
         v-on="$listeners"
@@ -19,7 +19,10 @@ export default {
     ValidationProvider
   },
   props: {
-    rules: {
+    errorValidate: {
+      default: ''
+    },
+      rules: {
       type: [Object, String],
       default: ''
     },

@@ -29,11 +29,11 @@
                                             <VTextFieldWithValidation
                                                 v-model="form.name"
                                                 rules="required"
+                                                :errorValidate="errors.name"
                                                 ref="name"
                                                 field="name"
                                                 :label="'Category Name*'"
                                                 placeholder="Tourism"/>
-
                                         </v-col>
 
                                         <v-col cols="12" sm="12" md="12">
@@ -173,6 +173,7 @@ export default {
         return {
             dialog: false,
             loading: false,
+            errors: [],
             categories: {},
             editId: null,
             form: {
@@ -232,6 +233,8 @@ export default {
                 this.loading = false;
                 this.dialog = false;
             }).catch(err => {
+                this.errors=err.data.errors
+                this.$toastr.e('Something went wrong!')
                 this.loading = false;
             })
             this.editId = null

@@ -13,6 +13,7 @@
                         <v-col cols="12" md="6">
                             <VTextFieldWithValidation v-model="form.name" rules="required" ref="name"
                                                       field="name"
+                                                      :errorValidate="errors.name"
                                                       :label="'Title Of the project*'"/>
                         </v-col>
 
@@ -134,6 +135,7 @@ export default {
             loading: false,
             dialog: false,
             dialog2: false,
+            errors:'',
             services: [],
             form: {
                 name: '',
@@ -160,7 +162,7 @@ export default {
                 this.form = res.data.data;
                 this.loading = false;
             }).catch(err => {
-                this.$toastr.e('Something went wrong! ' + err);
+                this.$toastr.e('Something went wrong!');
                 this.loading = false;
             })
         },
@@ -187,7 +189,8 @@ export default {
                 this.$router.push({name: 'projects'});
                 this.loading = false;
             }).catch(err => {
-                this.$toastr.e('Something went wrong! ' + err);
+                this.errors=err.data.errors
+                this.$toastr.e('Something went wrong!');
                 this.loading = false;
             })
         }
