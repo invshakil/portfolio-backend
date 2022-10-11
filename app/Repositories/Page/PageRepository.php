@@ -3,11 +3,12 @@
 
 namespace App\Repositories\Page;
 
-use App\Models\Tag;
+use App\Models\Keyword;
+use App\Models\News;
 use App\Models\Page;
 use Illuminate\Http\Request;
 
-class PageRepository implements PageInterface
+class PageRepository
 {
     private $model;
 
@@ -20,37 +21,32 @@ class PageRepository implements PageInterface
      * @param $request
      * @return mixed
      */
-    public function save(Request $request)
+
+    public function saveNews(Request $request)
     {
-        $page = $this->model->create([
-            'user_id' => auth()->user()->id,
-            'title' => $request->input('title'),
-            'slug' => $this->slugify($request->input('title')),
-            'excerpt' => $request->input('excerpt'),
-            'featured' => filter_var($request->input('featured'), FILTER_VALIDATE_BOOLEAN),
-            'description' => saveTextEditorImage($request->input('description')),
+        $image_url = $this->storeImage($request, $currentFeatured = '');
+
+        return News::create([
+            "title" => $request->input('title'),
+            "description" => $request->input('description'),
             'published' => filter_var($request->input('published'), FILTER_VALIDATE_BOOLEAN),
-            'meta_title' => $request->input('meta_title'),
+            'image' => $image_url,
         ]);
-
-        // Keywords
-        $newKeywords = explode(',', $request->input('keywords'));
-        $keywordIds = [];
-
-        foreach ($newKeywords as $keyword) {
-            $keyword = Tag::firstOrCreate(['title' => $keyword]);
-            array_push($keywordIds, $keyword->id);
-        }
-
-        $page->keywords()->sync($keywordIds);
-
-
-        return $page;
     }
 
-    private function slugify($name): string
+    private function storeImage($request, $currentFeatured): string
     {
-        return \Str::slug($name);
+        $image = $request->image;
+        if ($request->hasFile('image')) {
+            $image_ext = $image->getClientOriginalExtension();
+            $image_full_name = 'featured_' . $request->input('title') . '.' . $image_ext;
+            $upload_path = 'featured/images/';
+            $image_url = $upload_path . $image_full_name;
+            $image->move($upload_path, $image_full_name);
+        } else {
+            $image_url = $currentFeatured->image;
+        }
+        return $image_url;
     }
 
     /**
@@ -58,41 +54,16 @@ class PageRepository implements PageInterface
      * @param int $id
      * @return mixed
      */
-    public function update(Request $request, int $id)
+    public function updateNews(Request $request, int $id)
     {
-        $page = $this->model->findOrFail($id);
+        $news = News::findOrFail($id);
 
         $data = [
-            'title' => $request->input('title'),
-            'slug' => $this->slugify($request->input('title')),
-            'excerpt' => $request->input('excerpt'),
-            'description' => saveTextEditorImage($request->input('description')),
+            "title" => $request->input('title'),
+            "description" => $request->input('description'),
             'published' => filter_var($request->input('published'), FILTER_VALIDATE_BOOLEAN),
-            'meta_title' => $request->input('meta_title'),
         ];
-
-        // Keywords
-        $page->keywords()->detach();
-        $newKeywords = explode(',', $request->input('keywords'));
-        $keywordIds = [];
-
-        foreach ($newKeywords as $keyword) {
-            $keyword = Tag::firstOrCreate(['title' => $keyword]);
-            array_push($keywordIds, $keyword->id);
-        }
-
-        $page->keywords()->sync($keywordIds);
-
-        return $page->update($data);
-    }
-
-    public function delete(int $id)
-    {
-        $page = $this->model->findOrFail($id);
-        $page->keywords()->detach();
-        $page->pageLinks()->delete();
-
-        return $page->delete();
+        return $news->update($data);
     }
 
     public function all(array $columns = [])
@@ -100,9 +71,26 @@ class PageRepository implements PageInterface
         return count($columns) ? $this->model->select($columns)->orderBy('id')->get() : $this->model->orderBy('id')->get();
     }
 
+    public function allNews(array $columns = [])
+    {
+        return count($columns) ? News::select($columns)->orderBy('id')->get() : News::orderBy('id')->get();
+    }
+
     public function paginate($perPage = 10)
     {
         return $this->model->latest()
+            ->when(request()->has('is_published'), function ($q) {
+                $q->where('published', (bool)request('is_published'));
+            })
+            ->when(\request()->has('search'), function ($q) {
+                $q->where('title', 'LIKE', '%' . \request('search') . '%');
+            })
+            ->paginate($perPage);
+    }
+
+    public function paginateNews($perPage = 10)
+    {
+        return News::latest()
             ->when(request()->has('is_published'), function ($q) {
                 $q->where('published', (bool)request('is_published'));
             })

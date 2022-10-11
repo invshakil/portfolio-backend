@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\EducationController;
+use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\PageController;
 use App\Http\Controllers\Api\ProjectsController;
 use App\Http\Controllers\Api\ServicesController;
@@ -82,4 +83,11 @@ Route::group([
     Route::get("hit", [WebsiteController::class, 'SetVisitor']);
     Route::get("visitCount", [WebsiteController::class, 'getTotalVisitCount']);
     Route::get("visitorInfo", [WebsiteController::class, 'getVisitorsInfo']);
+
+    Route::apiResource("news", NewsController::class);
+    Route::post("save-news-status", [NewsController::class, 'saveNewsStatus']);
+    Route::delete("delete-news/{id}", [NewsController::class, 'deleteNews']);
+    Route::post("news/{id}", [NewsController::class, 'update']);
+    Route::get("news/{slug}/edit", [NewsController::class, 'edit']);
+    Route::get("fetch-all-published-news", [NewsController::class, 'get']);
 });

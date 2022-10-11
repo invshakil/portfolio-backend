@@ -37,6 +37,24 @@ const routes = [
         component: () => import(`@/views/Articles/Edit.vue`),
     },
     {
+        path: 'create-news',
+        name: 'new-news',
+        meta: {name: 'New News', slug: 'new-news', requiresAuth: true},
+        component: () => import(`@/views/News/New.vue`),
+    },
+    {
+        path: 'news/:slug/edit',
+        name: 'edit-news',
+        meta: {name: 'Edit News', slug: 'edit-news', requiresAuth: true},
+        component: () => import(`@/views/News/Edit.vue`),
+    },
+    {
+        path: 'news',
+        name: 'news',
+        meta: {name: 'News', slug: 'news', requiresAuth: true},
+        component: () => import(`@/views/News/List.vue`)
+    },
+    {
         path: 'categories',
         name: 'categories',
         meta: {name: 'Categories', slug: 'categories', requiresAuth: true},

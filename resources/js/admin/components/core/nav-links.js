@@ -84,6 +84,11 @@ const adminRoutes = [
         slug: 'services',
     },
     {
+        to: `/${adminPrefixSlug}/news`,
+        icon: 'mdi-square-edit-outline',
+        slug: 'news'
+    },
+    {
         to: `/${adminPrefixSlug}/skills`,
         icon: 'mdi-car-esp',
         slug: 'skills',
