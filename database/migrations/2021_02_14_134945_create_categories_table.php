@@ -16,12 +16,8 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('slug')->unique();
-            $table->string('excerpt');
-            $table->text('keywords')->nullable();
-            $table->boolean('is_video')->default(0);
-            $table->boolean('is_published')->default(1);
-            $table->tinyInteger('position');
+            $table->boolean('status')->default(1);
+            $table->longText('description');
             $table->timestamps();
         });
     }

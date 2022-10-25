@@ -17,6 +17,13 @@
                                                       :label="'title*'"/>
                         </v-col>
 
+                        <v-col cols="12" md="6">
+                            <VTextFieldWithValidation v-model="form.count" rules="required"
+                                                      ref="count"
+                                                      field="count"
+                                                      :label="'How many posts to feature*'"/>
+                        </v-col>
+
                         <v-col cols="12" md="4">
                             <VRadioInputWithValidation field="published"
                                                        :rules="'required'"
@@ -111,6 +118,7 @@ export default {
                 published: 0,
                 description: '',
                 image: '',
+                count: '',
             }
         }
     },

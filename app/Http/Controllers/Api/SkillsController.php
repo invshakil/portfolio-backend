@@ -42,6 +42,7 @@ class SkillsController extends ApiController
     public function store(Request $request): JsonResponse
     {
         $request->validate([
+            'title' => 'required|unique:skills,title',
             'description' => 'required'
         ]);
 

@@ -15,10 +15,8 @@ class CreateSkillsTable extends Migration
     {
         Schema::create('skills', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->boolean('is_google')->default(true);
-            $table->text('content')->comment('its either google script or image path of custom ad');
-            $table->text('location')->nullable();
+            $table->string('title');
+            $table->longText('description');
             $table->boolean('published')->default(true);
             $table->timestamps();
         });

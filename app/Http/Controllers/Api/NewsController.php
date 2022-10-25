@@ -74,7 +74,7 @@ class NewsController extends ApiController
 
     public function get(News $news): JsonResponse
     {
-        $news = $this->pageRepository->allNews(['id', 'title']);
+        $news = $this->pageRepository->allNews(['id', 'title', 'description', 'image']);
         $newsIds = News::where('published',1)->pluck('id');
 
         return $this->successResponse(['news' => $news, 'newsIds' => $newsIds]);

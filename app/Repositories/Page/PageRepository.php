@@ -73,7 +73,7 @@ class PageRepository
 
     public function allNews(array $columns = [])
     {
-        return count($columns) ? News::select($columns)->orderBy('id')->get() : News::orderBy('id')->get();
+        return count($columns) ? News::select($columns)->where('published',1)->orderBy('id')->get() : News::orderBy('id')->where('published',1)->get();
     }
 
     public function paginate($perPage = 10)

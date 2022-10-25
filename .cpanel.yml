@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/witbal5/admin.sshakil.com/
+    - /bin/cp * $DEPLOYPATH

@@ -6,11 +6,17 @@
             <v-flex>
                 <material-card
                     :color="$store.state.app.color"
-                    :title="`Skills Page`"
+                    :title="`Skills`"
                     :text="`Edit, create new or delete a Skills`"
                 >
                     <v-container>
-
+                        <v-row>
+                            <v-col cols="12" sm="6">
+                                <v-btn color="dark" class="float-left" dark @click="openForm">
+                                    Create new
+                                </v-btn>
+                            </v-col>
+                        </v-row>
                         <v-row justify="center">
                             <v-dialog
                                 v-model="dialog"
@@ -27,7 +33,15 @@
                                             <v-card-text>
                                                 <v-container>
                                                     <v-row>
-                                                        <v-col cols="12" md="12">
+                                                        <v-col cols="12" md="6">
+                                                            <VTextFieldWithValidation v-model="form.title"
+                                                                                      rules="required"
+                                                                                      ref="title"
+                                                                                      field="title"
+                                                                                      :label="'Title*'"/>
+                                                        </v-col>
+
+                                                        <v-col cols="12" md="6">
                                                             <vue-editor id="editor"
                                                                         :editorOptions="editorConfig"
                                                                         v-model="form.description"/>
@@ -65,10 +79,13 @@
                                 <thead>
                                 <tr>
                                     <th class="text-left">
-                                        Skills Page
+                                        Title
                                     </th>
                                     <th class="text-left">
-                                        Edit Page
+                                        Description
+                                    </th>
+                                    <th class="text-left">
+                                        Edit
                                     </th>
                                 </tr>
                                 </thead>
@@ -87,6 +104,7 @@
                                         v-for="(skill, index) in skills.data"
                                         :key="index"
                                     >
+                                        <td v-html= skill.title />
                                         <td v-html= skill.description />
                                         <td>
                                             <v-icon
@@ -144,14 +162,12 @@ export default {
             skills: {},
             editId: null,
             form: {
+                title:'',
                 description: '',
             }
         }
     },
     methods: {
-        priorityChange(data) {
-            console.log(data);
-        },
         index(page = 1) {
             this.loading = true;
             skillsAPi.get(page).then(res => {
@@ -163,6 +179,7 @@ export default {
         },
         openForm() {
             this.form = {
+                title:'',
                 description: '',
             };
             this.dialog = true
