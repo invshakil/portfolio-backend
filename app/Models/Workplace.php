@@ -19,7 +19,8 @@ class Workplace extends Model
         'current',
         'company_name',
         'designation',
-        'language',
+        'location',
+        'company_link',
         'description',
         'label'
     ];

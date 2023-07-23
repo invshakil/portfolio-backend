@@ -121,9 +121,9 @@ const routes = [
         component: () => import(`@/views/Projects/Edit.vue`),
     },
     {
-        path: 'services',
-        name: 'services',
-        meta: {name: 'Services', slug: 'services', requiresAuth: true},
+        path: 'interests',
+        name: 'interests',
+        meta: {name: 'Interests', slug: 'interests', requiresAuth: true},
         component: () => import(`@/views/Services/List.vue`)
     },
     {

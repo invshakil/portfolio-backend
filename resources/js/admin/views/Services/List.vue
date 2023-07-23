@@ -6,8 +6,8 @@
             <v-flex>
                 <material-card
                     :color="$store.state.app.color"
-                    :title="`Services List`"
-                    :text="`Edit, create new or delete a service`"
+                    :title="`Interests List`"
+                    :text="`Edit, create new or delete a interest`"
                 >
                     <v-container>
                         <v-row>
@@ -30,7 +30,7 @@
                                     <v-form>
                                         <v-card>
                                             <v-card-title>
-                                                <span class="headline">New Service</span>
+                                                <span class="headline">Interest</span>
                                             </v-card-title>
                                             <v-card-text>
                                                 <v-container>
@@ -41,25 +41,25 @@
                                                                                       :errorValidate="errors.name"
                                                                                       ref="name"
                                                                                       field="name"
-                                                                                      :label="'Service Name*'"/>
+                                                                                      :label="'Interest Name*'"/>
 
                                                         </v-col>
 
-                                                        <v-col cols="12" sm="12" md="12">
-                                                            <VTextFieldWithValidation v-model="form.description"
-                                                                                      rules="required"
-                                                                                      ref="excerpt"
-                                                                                      field="excerpt"
-                                                                                      :label="'Service Description*'"/>
-
+                                                        <v-col cols="12" md="12">
+                                                            <VTextAreaFieldWithValidation v-model="form.description"
+                                                                                          rules="required"
+                                                                                          ref="excerpt"
+                                                                                          rows="3"
+                                                                                          field="description"
+                                                                                          :label="'Description*'"/>
                                                         </v-col>
-                                                        <v-col cols="12" sm="12" md="12">
-                                                            <VTextFieldWithValidation v-model="form.icon_class"
-                                                                                      ref="icon_class"
-                                                                                      field="icon_class"
-                                                                                      :label="'Icon Class*'"/>
+<!--                                                        <v-col cols="12" sm="12" md="12">-->
+<!--                                                            <VTextFieldWithValidation v-model="form.icon_class"-->
+<!--                                                                                      ref="icon_class"-->
+<!--                                                                                      field="icon_class"-->
+<!--                                                                                      :label="'Icon Class*'"/>-->
 
-                                                        </v-col>
+<!--                                                        </v-col>-->
 
                                                     </v-row>
 
@@ -100,9 +100,9 @@
                                     <th class="text-left">
                                         Description
                                     </th>
-                                    <th class="text-left">
-                                        Icon Class
-                                    </th>
+<!--                                    <th class="text-left">-->
+<!--                                        Icon Class-->
+<!--                                    </th>-->
                                     <th class="text-left">
                                         Actions
                                     </th>
@@ -125,7 +125,7 @@
                                     >
                                         <td> {{ service.name }}</td>
                                         <td> {{ service.description }}</td>
-                                        <td> {{ service.icon_class }}</td>
+<!--                                        <td> {{ service.icon_class }}</td>-->
                                         <td>
                                             <v-icon
                                                 :loading="loading"
@@ -156,6 +156,7 @@
 <script>
 import draggable from 'vuedraggable';
 import VTextFieldWithValidation from "@/components/inputs/VTextFieldWithValidation";
+import VTextAreaFieldWithValidation from "@/components/inputs/VTextAreaFieldWithValidation";
 import {ValidationObserver} from 'vee-validate'
 import servicesApi from "@/api/resources/services";
 import VRadioInputWithValidation from "@/components/inputs/VRadioInputWithValidation";
@@ -167,7 +168,8 @@ export default {
         VTextFieldWithValidation,
         ValidationObserver,
         draggable,
-        MaterialCard
+        MaterialCard,
+        VTextAreaFieldWithValidation
     },
     data() {
         return {

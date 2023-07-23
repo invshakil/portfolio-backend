@@ -43,7 +43,7 @@
                                                          :options="services.data"
                                                          ref="service_id"
                                                          field="service_id"
-                                                         :label="`Service`"
+                                                         :label="`Topic`"
                                                          item-text="name"
                                                          item-value="id"/>
                         </v-col>

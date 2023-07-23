@@ -79,9 +79,9 @@ const adminRoutes = [
         ]
     },
     {
-        to: `/${adminPrefixSlug}/services`,
+        to: `/${adminPrefixSlug}/interests`,
         icon: 'mdi-handshake-outline',
-        slug: 'services',
+        slug: 'interests',
     },
     {
         to: `/${adminPrefixSlug}/news`,

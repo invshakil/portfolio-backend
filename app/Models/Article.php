@@ -12,11 +12,12 @@ class Article extends BaseModel
 {
     use HasFactory;
 
-    protected $appends = ['image_url', 'thumb_image_url'];
+//    protected $appends = ['image_url', 'thumb_image_url'];
 
     protected $fillable = [
         'user_id',
         'title',
+        'slug',
         'description',
         'meta_description',
         'image',
@@ -52,28 +53,5 @@ class Article extends BaseModel
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'article_tags', 'article_id', 'tag_id')->withPivot('id');
-    }
-
-    public function getImageUrlAttribute(): ?string
-    {
-        return $this->image ? Storage::disk('public')->url('articles/' . basename($this->image)) : null;
-    }
-
-    public function getThumbImageUrlAttribute(): ?string
-    {
-        if ($this->image) {
-            if (Storage::disk('public')->exists('articles/thumb_' . basename($this->image))) {
-                return Storage::disk('public')->url('articles/thumb_' . basename($this->image));
-            } else {
-                return Storage::disk('public')->url('articles/' . basename($this->image));
-            }
-        } else {
-            return null;
-        }
-    }
-
-    public function getReadTimeAttribute(): string
-    {
-        return $this->attributes['read_time'] . ' min Lesezeit';
     }
 }

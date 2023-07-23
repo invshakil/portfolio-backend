@@ -15,7 +15,8 @@ class Tag extends Model
     protected $guarded = [];
 
     protected $fillable = [
-        'name'
+        'name',
+        'slug',
     ];
 
     /**

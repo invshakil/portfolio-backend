@@ -40,12 +40,24 @@
                                                                                       field="title"
                                                                                       :label="'Title*'"/>
                                                         </v-col>
-
                                                         <v-col cols="12" md="6">
-                                                            <vue-editor id="editor"
-                                                                        :editorOptions="editorConfig"
-                                                                        v-model="form.description"/>
+                                                            <VTextFieldWithValidation v-model="form.accuracy"
+                                                                                      :rules="[
+                                                                                          value => !!value || 'Your Level Of Mastery is required',
+                                                                                          value => (value && /^\d+$/.test(value)) || 'Your Level Of Mastery must be a number',
+                                                                                          value => (value && value >= 1 && value <= 100) || 'Your Level Of Mastery must be between 1 and 100'
+                                                                                        ]"
+                                                                                      ref="title"
+                                                                                      field="title"
+                                                                                      label="Your Level Of Mastery*"/>
                                                         </v-col>
+
+
+                                                        <!--                                                        <v-col cols="12" md="12">-->
+<!--                                                            <vue-editor id="editor"-->
+<!--                                                                        :editorOptions="editorConfig"-->
+<!--                                                                        v-model="form.description"/>-->
+<!--                                                        </v-col>-->
                                                     </v-row>
 
                                                 </v-container>
@@ -82,7 +94,7 @@
                                         Title
                                     </th>
                                     <th class="text-left">
-                                        Description
+                                        Your level of Mastery
                                     </th>
                                     <th class="text-left">
                                         Edit
@@ -105,7 +117,7 @@
                                         :key="index"
                                     >
                                         <td v-html= skill.title />
-                                        <td v-html= skill.description />
+                                        <td v-html= skill.accuracy />
                                         <td>
                                             <v-icon
                                                 :loading="loading"
@@ -164,6 +176,7 @@ export default {
             form: {
                 title:'',
                 description: '',
+                accuracy: '',
             }
         }
     },

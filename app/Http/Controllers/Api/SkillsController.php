@@ -43,7 +43,7 @@ class SkillsController extends ApiController
     {
         $request->validate([
             'title' => 'required|unique:skills,title',
-            'description' => 'required'
+            'accuracy' => 'required',
         ]);
 
         try {
@@ -78,10 +78,6 @@ class SkillsController extends ApiController
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $request->validate([
-            'description' => 'required'
-        ]);
-
         $data=$request->all();
         $service = $this->skillsRepository->update($data, $id);
 

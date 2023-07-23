@@ -39,7 +39,7 @@ class WorkplaceController extends ApiController
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            'company_name' => 'required|unique:workplaces,company_name'
+            'company_name' => 'required'
         ]);
 
         try {

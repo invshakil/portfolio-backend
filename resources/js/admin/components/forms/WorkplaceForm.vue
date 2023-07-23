@@ -21,18 +21,23 @@
                             <VTextFieldWithValidation v-model="form.designation"
                                                       rules="required"
                                                       ref="designation"
-                                                      field="designation" :label="'Designation'"/>
+                                                      field="designation" :label="'Designation*'"/>
                         </v-col>
 
                         <v-col cols="12" md="6">
-                            <VTextFieldWithValidation v-model="form.language"
+                            <VTextFieldWithValidation v-model="form.location"
                                                       rules="required"
                                                       ref="language"
-                                                      field="language" :label="'Languages Used'"/>
+                                                      field="language" :label="'Location *'"/>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <VTextFieldWithValidation v-model="form.company_link"
+                                                      ref="language"
+                                                      field="language" :label="'Company Website'"/>
                         </v-col>
 
 
-                        <v-col cols="12" md="4">
+                        <v-col cols="12" md="12">
                             <VRadioInputWithValidation field="current"
                                                        :rules="'required'"
                                                        :options="[{label: 'Yes', value: 1}, {label: 'No', value: 0}]"
@@ -49,12 +54,11 @@
                                                       @click.stop="dialog = true"/>
                         </v-col>
 
-                        <v-col cols="12" sm="12" md="6">
+                        <v-col cols="12" sm="12" md="6" v-show="!form.current">
                             <VTextFieldWithValidation v-model="form.to"
-                                                      rules="required"
                                                       ref="to"
                                                       field="to"
-                                                      :label="'Job Ended On*'"
+                                                      :label="'Job Ended On'"
                                                       placeholder="Job Ended On*"
                                                       @click.stop="dialog2 = true"/>
                         </v-col>
@@ -63,7 +67,7 @@
                             <VTextAreaFieldWithValidation v-model="form.description"
                                                           rules="required"
                                                           ref="description"
-                                                          rows="2"
+                                                          rows="3"
                                                           field="description"
                                                           :label="'Description*'"/>
                         </v-col>
@@ -186,7 +190,8 @@ export default {
             dialog2: false,
             form: {
                 designation: '',
-                language: '',
+                company_link: '',
+                location: '',
                 company_name: '',
                 description: '',
                 current: 1,
