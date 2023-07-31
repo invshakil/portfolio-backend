@@ -57,10 +57,21 @@ class CategoryController extends ApiController
 
     }
 
-    public function show(int $id): JsonResponse
+    public function show($slug): JsonResponse
     {
         try {
-            return $this->successResponse($this->categoryRepository->getById($id));
+            return $this->successResponse($this->categoryRepository->getById($slug));
+        } catch (Exception $exception) {
+            $this->errorLog($exception, 'api');
+
+            return $this->failResponse($exception->getMessage());
+        }
+    }
+
+    public function getWithArticles($slug): JsonResponse
+    {
+        try {
+            return $this->successResponse($this->categoryRepository->getById($slug));
         } catch (Exception $exception) {
             $this->errorLog($exception, 'api');
 

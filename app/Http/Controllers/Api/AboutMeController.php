@@ -7,6 +7,9 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Tag;
+use App\Models\Workplace;
+use App\Models\Education;
+use App\Models\Skill;
 
 class AboutMeController extends ApiController
 {
@@ -110,5 +113,16 @@ class AboutMeController extends ApiController
         $tags=Tag::all();
 
         return $this->successResponse($tags);
+    }
+
+    public function etc()
+    {
+        $workplace=Workplace::where('current',1)->orderBy('from', 'desc')->first();
+        $education=Education::orderBy('session', 'desc')->first();
+        $skills=Skill::orderBy('id', 'desc')->limit(10)->get();
+
+        $result=['education'=>$education, 'skills'=>$skills, 'workplace'=>$workplace];
+
+        return $this->successResponse($result);
     }
 }

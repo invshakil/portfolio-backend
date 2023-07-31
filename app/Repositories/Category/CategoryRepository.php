@@ -5,6 +5,7 @@ namespace App\Repositories\Category;
 
 
 use App\Models\Category;
+use App\Models\Article;
 use Artisan;
 
 class CategoryRepository implements CategoryInterface
@@ -23,9 +24,17 @@ class CategoryRepository implements CategoryInterface
         return $this->model->create($data);
     }
 
-    public function getById(int $id)
+    public function getById($slug)
     {
-        return $this->model->find($id);
+        $cat= $this->model->where('slug', $slug)->first();
+
+        return Article::latest()
+            ->with(['categories'])
+            ->with(['author'])
+            ->whereHas('categories', function ($sq) use ($cat) {
+                    $sq->where('categories.id', $cat->id);
+                })
+            ->get();
     }
 
     public function update(array $data, int $id)

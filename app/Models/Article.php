@@ -17,6 +17,7 @@ class Article extends BaseModel
     protected $fillable = [
         'user_id',
         'title',
+        'slug',
         'description',
         'meta_description',
         'image',

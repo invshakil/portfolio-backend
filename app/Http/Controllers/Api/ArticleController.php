@@ -30,16 +30,24 @@ class ArticleController extends ApiController
     public function index(Request $request)
     {
 
+        $featured= $this->articleRepository->featured();
+        $ids=[];
+        foreach ($featured as $feature){
+            $ids[]=$feature['id'];
+        }
+        $categoryArticles= $this->articleRepository->categoryArticles($ids);
         $allArticles= $this->successResponse($this->articleRepository->paginate(10), true);
         $popular= $this->successResponse($this->articleRepository->mostReadArticles(7), true);
         $count= $this->successResponse($this->articleRepository->getArticleCount(), true);
-        $categoryCount= $this->successResponse($this->articleRepository->getCategoriesCount(), true);
+//        $categoryCount= $this->successResponse($this->articleRepository->getCategoriesCount(), true);
 
         $response = [
             'all' => $allArticles,
             'countInLastDay'=>$count,
-            'categoryCount'=>$categoryCount,
+//            'categoryCount'=>$categoryCount,
             'popular'=>$popular,
+            'featured'=>$featured,
+            'categoryArticles'=>$categoryArticles,
         ];
 
         return response($response, 201);

@@ -44,6 +44,7 @@ Route::group([
 
     Route::post("categories/priority-update", [CategoryController::class, 'priorityUpdate']);
     Route::apiResource("categories", CategoryController::class);
+    Route::post("categories/{slug}", [CategoryController::class, 'getWithArticles']);
 
     Route::get("articles/{slug}/edit", [ArticleController::class, 'edit']);
     Route::post("articles/{id}", [ArticleController::class, 'update']);
@@ -73,6 +74,7 @@ Route::group([
     Route::get("about-me/{id}/edit", [AboutMeController::class, 'show']);
     Route::get("allTags", [AboutMeController::class, 'getAllTags']);
     Route::post("about-me/{id}", [AboutMeController::class, 'update']);
+    Route::get("about-me/etc", [AboutMeController::class, 'etc']);
     Route::apiResource("about-me", AboutMeController::class);
 
     Route::get("settings/{id}/edit", [SettingsController::class, 'show']);

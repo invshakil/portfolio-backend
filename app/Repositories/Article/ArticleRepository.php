@@ -33,10 +33,10 @@ class ArticleRepository implements ArticleInterface
         $data = $this->storeData($request, $image_url);
         $article = $this->model::create($data);
         // Category
-        $categoryIDs=$this->getCategoryIDs($request->input('categories'));
+        $categoryIDs = $this->getCategoryIDs($request->input('categories'));
         $article->categories()->sync($categoryIDs);
         // Tags
-        $tagIDs=$this->getTagIDs($request);
+        $tagIDs = $this->getTagIDs($request);
         $article->tags()->sync($tagIDs);
 
         return $article;
@@ -51,10 +51,10 @@ class ArticleRepository implements ArticleInterface
         $data = $this->storeData($request, $image_url);
         // Category
         $article->categories()->detach();
-        $categoryIDs=$this->getCategoryIDs($request->input('categories'));
+        $categoryIDs = $this->getCategoryIDs($request->input('categories'));
         $article->categories()->sync($categoryIDs);
         // Tags
-        $tagIDs=$this->getTagIDs($request);
+        $tagIDs = $this->getTagIDs($request);
         $article->tags()->detach();
         $article->tags()->sync($tagIDs);
 
@@ -65,10 +65,10 @@ class ArticleRepository implements ArticleInterface
 
     private function getCategoryIDs($request): array
     {
-        $newCategories= explode(',', $request);
+        $newCategories = explode(',', $request);
         $categoryIDs = [];
         foreach ($newCategories as $category) {
-            $cat= Category::where('name', $category)->first();
+            $cat = Category::where('name', $category)->first();
 
             $categoryIDs[] = $cat->id;
         }
@@ -108,13 +108,17 @@ class ArticleRepository implements ArticleInterface
             'user_id' => auth()->user()->id,
             'title' => $request->input('title'),
             'meta_title' => $request->input('meta_title'),
-//            'slug' => $this->slugify($request->input('title')),
+            'slug' => $this->slugify($request->input('title')),
             'meta_description' => $request->input('meta_description'),
             'slider_status' => filter_var($request->input('slider_status'), FILTER_VALIDATE_BOOLEAN),
             'description' => $request->input('description'),
             'status' => filter_var($request->input('status'), FILTER_VALIDATE_BOOLEAN),
             'image' => $image_url,
         ];
+    }
+
+    private function slugify($input){
+        return Str::slug($input);
     }
 
     public function delete(int $id)
@@ -134,7 +138,7 @@ class ArticleRepository implements ArticleInterface
         return count($columns) ? Article::select($columns)->orderBy('id')->get() : Article::orderBy('hit_count')->get();
     }
 
-    public function paginate($perPage = 10)
+    public function paginate($perPage = 12)
     {
         return Article::latest()
             ->with(['categories'])
@@ -189,23 +193,49 @@ class ArticleRepository implements ArticleInterface
         });
     }
 
-    public function mostReadArticles( int $limit)
+    public function mostReadArticles(int $limit)
     {
         return $this->model
-            ->select('id', 'title', 'status', 'image', 'hit_count')
+            ->select('id', 'title', 'status', 'image', 'hit_count', 'meta_description')
             ->limit($limit)
-            ->where('status',1)
+            ->where('status', 1)
             ->orderBy('hit_count', 'desc')
+            ->get();
+    }
+
+    public function featured()
+    {
+        return $this->model
+            ->select('id', 'title', 'status', 'image', 'slug', 'hit_count', 'description', 'created_at')
+            ->limit(5)
+            ->where('status', 1)
+            ->where('slider_status', 1)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+    public function categoryArticles($ids)
+    {
+//        return Category::with(['articles' => function ($query) use ($ids) {
+//            $query->take(5)->whereNotIn('articles.id', $ids);
+//        }])->get();
+//
+        return Category::where('status', 1)
+            ->with('articles', function ($q) use ($ids) {
+                $q->where('status', 1)
+                    ->orderBy('articles.id', 'desc')
+                    ->whereNotIn('articles.id', $ids)
+                    ->take(10);
+            })
             ->get();
     }
 
     public function getArticle($condition, $isSlug = true)
     {
-       $this->model->where('title', $condition)->increment('hit_count');
+        $this->model->where('title', $condition)->increment('hit_count');
 
         return $this->model->with(['categories' => function ($q) use ($condition, $isSlug) {
             $q->with(['articles' => function ($sq) use ($condition, $isSlug) {
-                $sq->select('article_id', 'title', 'status', 'hit_count', 'image', 'slider_status', 'description')
+                $sq->select('article_id', 'title', 'slug', 'status', 'hit_count', 'image', 'slider_status', 'description', 'created_at')
                     ->when($isSlug, function ($s) use ($condition, $isSlug) {
                         $s->where('title', '!=', $condition);
                     })
