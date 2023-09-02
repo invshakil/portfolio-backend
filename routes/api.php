@@ -49,6 +49,7 @@ Route::group([
     Route::get("articles/{slug}/edit", [ArticleController::class, 'edit']);
     Route::post("articles/{id}", [ArticleController::class, 'update']);
     Route::get("articles/show/{id}", [ArticleController::class, 'show']);
+    Route::get("articles/all", [ArticleController::class, 'allArticles']);
     Route::apiResource("articles", ArticleController::class);
 
     Route::get("workplaces/{id}/edit", [WorkplaceController::class, 'show']);

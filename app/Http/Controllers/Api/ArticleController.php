@@ -37,6 +37,7 @@ class ArticleController extends ApiController
         }
         $categoryArticles= $this->articleRepository->categoryArticles($ids);
         $allArticles= $this->successResponse($this->articleRepository->paginate(10), true);
+        $allArticles= $this->successResponse($this->articleRepository->paginate(10), true);
         $popular= $this->successResponse($this->articleRepository->mostReadArticles(7), true);
         $count= $this->successResponse($this->articleRepository->getArticleCount(), true);
 //        $categoryCount= $this->successResponse($this->articleRepository->getCategoriesCount(), true);
@@ -52,6 +53,18 @@ class ArticleController extends ApiController
 
         return response($response, 201);
     }
+
+    public function allArticles(Request $request)
+    {
+        $allArticles= $this->successResponse($this->articleRepository->allArticles(), true);
+        $response = [
+            'all' => $allArticles,
+        ];
+
+        return response($response, 201);
+    }
+
+
 
     /**
      * Creates Category & Returns created category
