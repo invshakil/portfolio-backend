@@ -138,6 +138,11 @@ class ArticleRepository implements ArticleInterface
         return count($columns) ? Article::select($columns)->orderBy('id')->get() : Article::orderBy('hit_count')->get();
     }
 
+    public function allArticles()
+    {
+        return Article::where('status',1)->get();
+    }
+
     public function paginate($perPage = 12)
     {
         return Article::latest()
